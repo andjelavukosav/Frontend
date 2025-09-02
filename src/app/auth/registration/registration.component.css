@@ -1,0 +1,220 @@
+/* Reset i osnove */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 50px 20px;
+}
+
+/* Glavna forma */
+.register-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 50px 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
+    position: relative;
+}
+
+/* Accent linija na vrhu */
+.register-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+    border-radius: 16px 16px 0 0;
+}
+
+/* Naslov */
+.register-container h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+    text-align: center;
+    margin-bottom: 35px;
+    position: relative;
+}
+
+/* Form grupe */
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+/* Labeli */
+.form-group label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+
+/* Input polja i select */
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 16px 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1f2937;
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus efekti */
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px rgba(59, 130, 246, 0.15),
+        0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input:focus + label,
+.form-group select:focus + label {
+    color: #3b82f6;
+}
+
+/* Select specifični stilovi */
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+/* Placeholder stilovi */
+.form-group input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+/* Hover efekti */
+.form-group input:hover:not(:focus),
+.form-group select:hover:not(:focus) {
+    border-color: #cbd5e1;
+}
+
+/* Submit dugme */
+button[type="submit"] {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+}
+
+/* Submit dugme hover */
+button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 30px rgba(59, 130, 246, 0.3),
+        0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"]:active:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+/* Disabled state */
+button[type="submit"]:disabled {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Shimmer efekat za dugme */
+button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    transition: left 0.6s;
+}
+
+button[type="submit"]:hover::before {
+    left: 100%;
+}
+
+/* Animacija pri učitavanju */
+.register-container {
+    animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+    .register-container {
+        margin: 20px;
+        padding: 40px 30px;
+        max-width: none;
+    }
+    
+    .register-container h2 {
+        font-size: 1.7rem;
+        margin-bottom: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 14px 12px;
+    }
+    
+    button[type="submit"] {
+        padding: 16px;
+        font-size: 1rem;
+    }
+}

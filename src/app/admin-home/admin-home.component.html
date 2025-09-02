@@ -1,0 +1,41 @@
+<app-navbar></app-navbar>
+
+<main class="admin-container">
+  <!-- Veliki kontejner preko cijelog ekrana -->
+  <section class="main-card">
+    <!-- Header sekcija (welcome + button u istom redu) -->
+    <div class="welcome-header">
+      <div class="welcome-text">
+        <h1>Welcome, {{ user?.username }}</h1>
+        <p>You have administrative privileges to manage users</p>
+      </div>
+      <button class="load-users-btn" (click)="loadUsers()">View All Users</button>
+    </div>
+
+    <!-- Tabela unutar istog kontejnera -->
+    <div class="table-container" *ngIf="showUsersTable">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td>{{ u.id }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+              <span class="role-badge" [class.admin]="u.role === 'admin'" [class.user]="u.role === 'user'">
+                {{ u.role }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,25 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <!-- Logo/Brand -->
+    <div class="nav-brand">
+      <a routerLink="/" class="brand-link">
+        <span class="brand-icon">🗺️</span>
+        <span class="brand-text">TourGuide</span>
+      </a>
+    </div>
+
+    <!-- Auth Buttons -->
+    <div class="nav-auth">
+      <!-- Ako korisnik NIJE prijavljen -->
+      <ng-container *ngIf="!(authService.user$ | async)?.username; else loggedIn">
+        <a routerLink="/register" class="auth-link register-btn">Register</a>
+        <a routerLink="/login" class="auth-link register-btn">Login</a>
+      </ng-container>
+
+      <!-- Ako korisnik JESTE prijavljen -->
+      <ng-template #loggedIn>
+        <button class="auth-link logout-btn" (click)="logout()">Logout</button>
+      </ng-template>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,150 @@
+/* Glavni container - bijela pozadina */
+.admin-container {
+  min-height: 100vh;
+  padding: 6rem 2rem 3rem 2rem; /* razmak od nav bara */
+  background: #ffffff;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+
+/* Header sekcija - tekst i dugme u istom redu */
+.welcome-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* da na manjim ekranima ide u dva reda */
+  gap: 1rem;
+}
+
+.welcome-text h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+}
+
+.welcome-text p {
+  font-size: 1rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+/* Dugme odmah uz tekst */
+.load-users-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.load-users-btn:hover {
+  background: #556cd6;
+  transform: translateY(-2px);
+}
+
+/* Tabela unutar kartice */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.users-table th, .users-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+}
+
+.users-table thead {
+  background: #f1f5f9;
+}
+
+/* Badge za role */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.role-badge.admin {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.role-badge.user {
+  background: #c6f6d5;
+  color: #276749;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 5rem 1rem 2rem 1rem;
+  }
+
+  .main-card {
+    padding: 1.5rem;
+  }
+
+  .welcome-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .load-users-btn {
+    align-self: flex-start;
+  }
+}
+
+/* Reset za body da nema viška skrola */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* sprječava horizontalni scroll */
+}
+
+/* Glavni container - bijela pozadina */
+.admin-container {
+  min-height: 100vh;
+  padding: 6rem 2rem 3rem 2rem; /* razmak od nav bara */
+  background: #ffffff;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-x: hidden;
+}
+
+/* Velika kartica koja ide preko cijelog ekrana (od margine do margine) */
+.main-card {
+  width: 100%;
+  max-width: 100%;          /* sprječava širenje preko ekrana */
+  box-sizing: border-box;   /* računa padding u širinu */
+  background: #f9f9f9;
+  border-radius: 12px;      /* smanjeno da ne "iskače" */
+  box-shadow: 0 6px 30px rgba(0,0,0,0.08);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
