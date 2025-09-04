@@ -4,13 +4,14 @@ import { RegistrationComponent } from './auth/registration/registration.componen
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { UserBlogsComponent } from './blog/components/user-blogs/user-blogs.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent }, // početna stranica
     { path: 'register', component: RegistrationComponent },
     { path: 'login', component: LoginComponent},
-    { path: 'adminHome', component: AdminHomeComponent}
-
+    { path: 'adminHome', component: AdminHomeComponent},
+    { path: 'blogs', component: UserBlogsComponent},
 ];
 
 @NgModule({

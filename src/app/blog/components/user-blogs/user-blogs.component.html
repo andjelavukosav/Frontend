@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<main class="blogs-container">
+  <section class="blogs-card">
+    <!-- Header sa dugmetom -->
+    <div class="blogs-header">
+      <h1>Your Blogs</h1>
+      <button class="create-blog-btn" *ngIf="userRole === 'tourist' || userRole === 'guide'" (click)="openCreateBlogDialog($event)">
+        Create Blog
+      </button>
+    </div>
+
+    <!-- Lista blogova -->
+    <div class="blog-list" *ngIf="blogs.length > 0; else noBlogs">
+      <div class="blog-card" *ngFor="let blog of blogs">
+        <h2>{{ blog.title }}</h2>
+        <div [innerHTML]="blog.sanitizedDescription"></div>
+        
+        <!-- Prikaz slika -->
+        <div class="blog-images" *ngIf="blog.images && blog.images.length > 0">
+          <img *ngFor="let img of blog.images" [src]="'http://localhost:8082' + img" alt="Blog Image" class="blog-image"/>
+        </div>
+        <small>Created at: {{ blog.createdAt | date:'medium' }}</small>
+      </div>
+    </div>
+
+    <!-- Placeholder ako nema blogova -->
+    <ng-template #noBlogs>
+      <p>You haven't created any blogs yet.</p>
+    </ng-template>
+  </section>
+</main>

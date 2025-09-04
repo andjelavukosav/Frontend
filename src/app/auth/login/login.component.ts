@@ -39,6 +39,8 @@ login(): void {
           // Inače, preusmeri na glavnu stranicu
           this.router.navigate(['/']);
         }
+        console.log('Logged in user: ', user)
+
       },
       error: (err) => {
         console.error(err);

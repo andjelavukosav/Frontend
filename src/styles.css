@@ -2,3 +2,16 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* SnackBar dugme bijelo */
+::ng-deep .custom-snack-bar {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+::ng-deep .custom-snack-bar .mat-simple-snackbar-action {
+  color: #ffffff !important;
+}

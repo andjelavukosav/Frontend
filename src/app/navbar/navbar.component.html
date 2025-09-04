@@ -8,6 +8,15 @@
       </a>
     </div>
 
+    <!-- Navigacija za prijavljenog korisnika -->
+    <div class="nav-links" *ngIf="authService.user$ | async as user">
+      <a *ngIf="user.role === 'tourist' || user.role === 'guide'" 
+         routerLink="/blogs" 
+         routerLinkActive="active-link">
+        Blogs
+      </a>
+    </div>
+    
     <!-- Auth Buttons -->
     <div class="nav-auth">
       <!-- Ako korisnik NIJE prijavljen -->

@@ -12,6 +12,8 @@ export class NavbarComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/home']); // ili neka početna stranica
+    this.router.navigate(['/']); // ili neka početna stranica
+    this.authService.user$.next({username: "", id: 0, email: "", role: "" });
+    console.log('User: ', this.authService.user$.value)
   }
 }

@@ -1,0 +1,56 @@
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh; /* dialog zauzima max 60% visine ekrana */
+  overflow-y: auto; /* skrol ako pređe visinu */
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.markdown-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* Stilizacija SimpleMDE editora */
+.CodeMirror, .editor-toolbar {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.editor-toolbar {
+  background: #fff;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #ccc;
+  padding: 4px;
+}
+
+.editor-toolbar button {
+  margin-right: 6px;   /* razmak između ikona */
+}
+
+/* Da textarea ima jasnu visinu */
+.CodeMirror {
+  min-height: 200px;
+  max-height: 300px; /* da ne raste preko 300px */
+  overflow-y: auto;  /* unutra skrol */
+}
+
+.field-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #555;
+}
