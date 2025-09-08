@@ -148,3 +148,45 @@ html, body {
   flex-direction: column;
   gap: 2rem;
 }
+
+.block-btn {
+  background: #e53e3e;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.block-btn:hover {
+  background: #c53030;
+  transform: translateY(-2px);
+}
+
+.current-user {
+  color: #a0a0a0;         /* svetlo sivo */
+  font-style: italic;      /* nakoseno */
+  font-weight: 600;        /* malo deblje da se istakne */
+  user-select: none;       /* ne može se selektovati tekst */
+}
+
+.unblock-btn {
+  background: #38a169;  /* tamno zelena */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.unblock-btn:hover {
+  background: #2f855a;  /* tamnija zelena */
+  transform: translateY(-2px);
+}
+

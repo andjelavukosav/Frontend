@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CreateBlogDialogComponent } from './blog/components/create-blog-dialog/create-blog-dialog.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MarkdownModule } from 'ngx-markdown';
     AdminHomeComponent,
     UserBlogsComponent,
     CreateBlogDialogComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
