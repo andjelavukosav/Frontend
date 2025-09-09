@@ -22,21 +22,26 @@ export class AdminHomeComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.authService.getAllUsers().subscribe({
-      next: (res) => {
-        if (this.user) {  // ✅ proverimo da user nije null
-          this.users = res.filter(u => u.id !== this.user!.id);
-        } else {
-          this.users = res;
-        }
-        this.showUsersTable = true;
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Failed to load users');
+  this.authService.getAllUsers().subscribe({
+    next: (res: any) => {
+      console.log("📌 Odgovor sa servera:", res);
+
+      const userList = res.users ?? []; // uzmi res.users, ako postoji
+      if (this.user) {
+        this.users = userList.filter((u: User) => u.id !== this.user!.id);
+      } else {
+        this.users = userList;
       }
-    });
-  }
+
+      this.showUsersTable = true;
+    },
+    error: (err) => {
+      console.error(err);
+      alert('Failed to load users');
+    }
+  });
+}
+
 
 
 
