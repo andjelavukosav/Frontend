@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/auth/model/user.model';
 import { HttpClient } from '@angular/common/http';
+import { AdminService } from '../services/admin.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -13,7 +14,14 @@ export class AdminHomeComponent implements OnInit {
   showUsersTable = false;
   users: User[] = [];
 
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  confirmingUser: User | null = null;
+  confirmMessage: string = '';
+
+  constructor(
+    private authService: AuthService, 
+    private http: HttpClient,
+    private adminService: AdminService
+  ) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(currentUser => {
@@ -43,6 +51,36 @@ export class AdminHomeComponent implements OnInit {
 }
 
 
+  confirmToggleBlock(user: User): void {
+    this.confirmingUser = user;
+    this.confirmMessage = user.isBlocked
+      ? `Are you sure you want to unblock ${user.username}?`
+      : `Are you sure you want to block ${user.username}?`;
+  }
+
+  onDialogConfirmed(confirmed: boolean): void {
+    if(!this.confirmingUser) return;
+
+     if (confirmed) {
+        const user = this.confirmingUser;
+
+        if (user.isBlocked) {
+            this.adminService.unblockUser(user.id).subscribe(() => {
+                user.isBlocked = false;
+            });
+        } else {
+            this.adminService.blockUser(user.id).subscribe(() => {
+                user.isBlocked = true;
+            });
+        }
+    }
+
+    this.confirmingUser = null; 
+}
+
+isCurrentUser(u: User): boolean {
+  return !!this.user && u.id === this.user.id;
+}
 
 
 }

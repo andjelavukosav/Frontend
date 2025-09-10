@@ -21,6 +21,7 @@
             <th>Username</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -33,9 +34,27 @@
                 {{ u.role }}
               </span>
             </td>
+            <td>
+            <!-- Ako je trenutno ulogovani korisnik, prikaži "You" -->
+            <span *ngIf="isCurrentUser(u)" class="current-user">You</span>
+
+            <!-- Ako nije trenutno ulogovani korisnik, prikaži dugme Block/Unblock -->
+            <button *ngIf="!isCurrentUser(u)" 
+                    [ngClass]="u.isBlocked ? 'unblock-btn' : 'block-btn'"
+                    (click)="confirmToggleBlock(u)">
+              {{ u.isBlocked ? 'Unblock' : 'Block' }}
+            </button>
+          </td>
+
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 </main>
+
+<app-confirm-dialog
+  *ngIf="confirmingUser"
+  [message]="confirmMessage"
+  (confirmed)="onDialogConfirmed($event)">
+</app-confirm-dialog>

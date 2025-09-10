@@ -10,6 +10,7 @@ import { Login } from '../model/login.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -43,9 +44,28 @@ login(): void {
 
       },
       error: (err) => {
-        console.error(err);
-        alert('Login failed. Please check your credentials.');
+       let message = 'Login failed. Please check your credentials.'
+      
+        if (err.error && err.error.error) {
+        switch (err.status) {
+          case 400:
+            message = 'Invalid request. Please try again.';
+            break;
+          case 401:
+            message = 'Username or password is incorrect.';
+            break;
+          case 403:
+            message = 'Your account has been blocked. Contact support.';
+            break;
+          case 500:
+            message = 'Server error. Please try later.';
+            break;
+          default:
+            message = err.error.error;
+        }
       }
+      alert(message);
+    }
     });
   }
 }
