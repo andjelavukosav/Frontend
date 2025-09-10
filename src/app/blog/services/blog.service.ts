@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Blog } from '../models/blog.model';
-
+import { BlogDetailsRead } from '../models/blogDetailsRead.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,5 +28,17 @@ export class BlogService {
       })
     );
   }
-  
+
+  getBlogWithComments(blogId: string): Observable<BlogDetailsRead> {
+    return this.http.get<BlogDetailsRead>(`${this.apiUrl}/${blogId}/details`);
+  }
+
+  createComment(blogId: string, content: string) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token ?? ''}`
+    });
+    return this.http.post(`${this.apiUrl}/${blogId}/comments`, { content }, { headers });
+  }
 }

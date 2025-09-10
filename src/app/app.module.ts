@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CreateBlogDialogComponent } from './blog/components/create-blog-dialog/create-blog-dialog.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { BlogDetailsComponent } from './blog/components/blog-details/blog-details.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MarkdownModule } from 'ngx-markdown';
     AdminHomeComponent,
     UserBlogsComponent,
     CreateBlogDialogComponent,
+    BlogDetailsComponent,
   ],
   imports: [
     BrowserModule,
