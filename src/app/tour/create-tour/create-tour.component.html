@@ -1,0 +1,40 @@
+<div class="container">
+  <h1>Upravljanje turama</h1>
+
+  <!-- Form za kreiranje nove ture -->
+  <div class="create-tour-section">
+    <h2>Kreiraj novu turu</h2>
+    <form (ngSubmit)="createTour()" #tourForm="ngForm" class="tour-form">
+
+      <div class="form-group">
+        <label for="tourName">Naziv ture:</label>
+        <input type="text" id="tourName" [(ngModel)]="newTour.name" name="tourName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tourDescription">Opis:</label>
+        <textarea id="tourDescription" [(ngModel)]="newTour.description" name="tourDescription" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="tourDifficulty">Težina:</label>
+        <select id="tourDifficulty" [(ngModel)]="newTour.difficulty" name="tourDifficulty" required>
+          <option value="">Izaberi težinu</option>
+          <option value="lako">Lako</option>
+          <option value="umereno">Umereno</option>
+          <option value="tesko">Teško</option>
+          <option value="vrlo-tesko">Vrlo teško</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tourTags">Tagovi (odvojeni zarezom):</label>
+        <!-- 👇 koristimo tagsInput umesto newTour.tags -->
+        <input type="text" id="tourTags" [(ngModel)]="tagsInput" name="tourTags" placeholder="planina, priroda, avantura">
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!tourForm.valid">Kreiraj turu</button>
+    </form>
+  </div>
+
+</div>

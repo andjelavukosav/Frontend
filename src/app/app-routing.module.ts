@@ -5,6 +5,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UserBlogsComponent } from './blog/components/user-blogs/user-blogs.component';
+import { CreateTourComponent } from './tour/create-tour/create-tour.component';
+import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent }, // početna stranica
@@ -12,6 +14,9 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'adminHome', component: AdminHomeComponent},
     { path: 'blogs', component: UserBlogsComponent},
+    { path: 'create-tour', component: CreateTourComponent},
+    { path: 'tours', component: DetailsTourComponent}
+    
 ];
 
 @NgModule({
