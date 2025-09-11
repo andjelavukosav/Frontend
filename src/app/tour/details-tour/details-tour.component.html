@@ -1,0 +1,20 @@
+  <!-- Prikaz postojećih tura -->
+  <div class="tours-section">
+    <h2>Moje ture</h2>
+    <div class="tours-list">
+      <div *ngFor="let tour of tours" class="tour-card" [ngClass]="tour.status">
+        <div class="tour-header">
+          <h3>{{ tour.name }}</h3>
+          <span class="status"> {{ tour.status }} </span>
+        </div>
+        <p class="tour-description">{{ tour.description }}</p>
+        <div class="tour-details">
+          <span class="difficulty"> {{ tour.difficulty }} </span>
+          <span class="price">Cena: {{ tour.price }} RSD</span>
+        </div>
+        <div class="tour-tags">
+          <span *ngFor="let tag of tour.tags" class="tag">{{ tag }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
