@@ -1,5 +1,5 @@
 /* Jednostavan i čist CSS za ture */
-
+@import '~leaflet/dist/leaflet.css';
 .tours-section {
   padding: 3rem 0;
   max-width: 1200px;
@@ -234,4 +234,267 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
+}
+
+/* Key Points sekcija */
+.key-points-section {
+  padding: 1.5rem 2rem 2rem 2rem;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.key-points-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.key-points-section h3::before {
+  content: '📍';
+  font-size: 1rem;
+}
+
+/* Postojeće ključne tačke */
+.key-point {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e9ecef;
+}
+
+.key-point:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.key-point h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.75rem 0;
+}
+
+.key-point p {
+  font-size: 0.9rem;
+  color: #495057;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+}
+
+.key-point p:last-of-type {
+  margin-bottom: 1rem;
+}
+
+/* Koordinate */
+.key-point p:has-text("Lat:") {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-family: 'Courier New', monospace;
+  background-color: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* Slika ključne tačke */
+.key-point img {
+  width: 500px; /* Postavite fiksnu širinu */
+  height: 250px; /* Postavite fiksnu visinu */
+  object-fit: contain; /* Osigurava da se cela slika vidi, bez sečenja */
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  transition: transform 0.2s ease;
+  display: block; /* Omogućava da slika zauzme punu širinu kontejnera, korisno za centriranje */
+  margin: 0 auto; /* Centrirajte sliku unutar kontejnera */
+}
+
+.key-point img:hover {
+  transform: scale(1.05);
+  border-color: #007bff;
+}
+
+/* No points poruka */
+.key-points-section p:has-text("No key points") {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+  margin-bottom: 1rem;
+}
+
+/* Add Key Point dugme */
+.key-points-section button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.key-points-section button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.key-points-section button:last-child {
+  background-color: #6c757d;
+  margin-right: 0;
+}
+
+.key-points-section button:last-child:hover {
+  background-color: #545b62;
+}
+
+/* Forma za dodavanje */
+.key-point-form {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+/* Input polja */
+.key-point-form input,
+.key-point-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.key-point-form input:focus,
+.key-point-form textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.key-point-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Koordinate input */
+.coordinates-input {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px 1fr; /* fiksna širina za label-e */
+  gap: 0.65rem; /* manji razmak */
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.65rem; /* manji padding */
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.coordinates-input input {
+  width: 100%;
+  max-width: 150px; /* ograničava širinu input polja */
+}
+
+
+.coordinates-input input {
+  margin: 0;
+}
+
+/* Odabrane koordinate */
+.selected-coords {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #28a745;
+}
+
+/* Mapa */
+.map-container {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  margin-bottom: 1.5rem;
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+.map-container::before {
+  content: '🗺️ Klikni na mapu da odabereš lokaciju';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-align: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .key-points-section {
+    padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+  }
+  
+  .key-point {
+    padding: 1rem;
+  }
+  
+  .key-point-form {
+    padding: 1.5rem;
+  }
+  
+  .coordinates-input {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .coordinates-input label {
+    margin-top: 0.5rem;
+  }
+  
+  .coordinates-input label:first-child {
+    margin-top: 0;
+  }
+  
+  .map-container {
+    height: 250px;
+  }
+  
+  .key-point img {
+    width: 100px;
+    height: 70px;
+  }
+}
+
+.map-container-point {
+  height: 200px; /* Postavite visinu mape */
+  width: 100%; /* Podesite širinu mape */
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.key-point-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }

@@ -1,5 +1,7 @@
+import { KeyPoint } from "./keypoint.model";
+
 export interface Tour {
-  id?: number;           // backend će generisati
+  id?: string;           // backend će generisati
   name: string;
   description: string;
   difficulty: string;
@@ -7,4 +9,5 @@ export interface Tour {
   status?: string;       // default "draft"
   price?: number;        // default 0
   authorId?: string;
+  keyPoints: KeyPoint[]; // <-- obavezno
 }
