@@ -8,6 +8,7 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-blogs',
@@ -25,7 +26,8 @@ export class UserBlogsComponent implements OnInit, OnDestroy {
     private blogService: BlogService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +73,10 @@ export class UserBlogsComponent implements OnInit, OnDestroy {
           });
         }
       });
+  }
+
+  viewBlogDetails(blogId: string) { 
+    this.router.navigate(['/blogs', blogId]);
   }
 
   ngOnDestroy(): void {

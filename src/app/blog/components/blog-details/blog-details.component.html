@@ -1,0 +1,84 @@
+<main class="details-container" *ngIf="!isLoading; else loadingTpl">
+  <div *ngIf="error" class="error-banner">
+    {{ error }}
+  </div>
+
+  <!-- ostatak sadržaja možeš i dalje uslovno da prikažeš ako postoji data -->
+  <section class="details-card" *ngIf="data?.blog as blog">
+    <!-- ... tvoj postojeći sadržaj za detalje i komentare ... -->
+
+    <!-- Forma ZA KOMENTAR UVEK VIDljIVA kad nije loading -->
+    <section class="add-comment">
+      <h3>Add a Comment</h3>
+      <form (ngSubmit)="submitComment()" #commentForm="ngForm">
+        <textarea
+          name="comment"
+          [(ngModel)]="newComment"
+          placeholder="Write your comment..."
+          rows="3"
+          required
+        ></textarea>
+        <button type="submit" [disabled]="!commentForm.valid">Submit</button>
+      </form>
+    </section>
+  </section>
+
+  <!-- Ako nema bloga (npr. 404), i dalje će se videti forma + error baner -->
+  <section *ngIf="!data?.blog">
+    <p>Blog not found, but you can still leave a comment if needed.</p>
+    <!-- 🚀 Lepša forma za komentar -->
+<section class="add-comment">
+  <div class="comment-card">
+    <header class="comment-card__header">
+      <h3><span class="icon" aria-hidden="true">💬</span> Add a Comment</h3>
+      <small class="muted">Be polite & constructive.</small>
+    </header>
+
+    <form (ngSubmit)="submitComment()" #commentForm="ngForm" class="comment-form" novalidate>
+      <label for="commentInput" class="sr-only">Your comment</label>
+
+      <textarea
+        id="commentInput"
+        name="comment"
+        [(ngModel)]="newComment"
+        placeholder="Share your thoughts…"
+        rows="4"
+        required
+        [attr.maxlength]="maxCommentLen"
+        (input)="0"
+      ></textarea>
+
+      <div class="comment-form__meta">
+        <span class="counter">{{ (newComment?.length || 0) }}/{{ maxCommentLen }}</span>
+        <div class="spacer"></div>
+
+        <button
+          type="button"
+          class="btn btn-ghost"
+          (click)="newComment=''"
+          [disabled]="isSubmitting || !(newComment?.length)"
+        >
+          Clear
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting || !commentForm.valid"
+        >
+          <span class="spinner" *ngIf="isSubmitting" aria-hidden="true"></span>
+          <span>{{ isSubmitting ? 'Sending…' : 'Post comment' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+  </section>
+</main>
+
+<ng-template #loadingTpl>
+  <div class="state">
+    <p>Loading blog details…</p>
+  </div>
+</ng-template>
