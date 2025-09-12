@@ -19,7 +19,8 @@ export class CreateTourComponent implements OnInit {
     difficulty: '',
     tags: [],
     status: 'draft',
-    price: 0
+    price: 0,
+    keyPoints: []   // ✅
   };
 
   tagsInput: string = '';   // 👈 ovde čuvaš unos korisnika
@@ -46,34 +47,44 @@ export class CreateTourComponent implements OnInit {
 }
 
 
-  createTour(): void {
-  // Pretvori string tagova u niz
+  // ... (your existing code) ...
+
+createTour(): void {
+  // Convert tags string to an array
   this.newTour.tags = this.tagsInput
     .split(',')
     .map(t => t.trim())
-    .filter(t => t !== ''); // izbacujemo prazne tagove
+    .filter(t => t !== ''); // Remove empty tags
 
-  console.log('Nova tura:', this.newTour);
+  console.log('New tour:', this.newTour);
   this.newTour.authorId = this.user?.id;
-  // Poziv servisa za backend
+
+  // Call the backend service
   this.tourService.createTour(this.newTour).subscribe({
     next: (createdTour) => {
-      // Dodaj novu turu u listu (backend može vratiti sa ID-jem)
+      // Add the new tour to the list
       this.tours.push(createdTour);
 
-      // Resetuj formu
+      // Reset the form
       this.newTour = {
         name: '',
         description: '',
         difficulty: '',
         tags: [],
         status: 'draft',
-        price: 0
+        price: 0,
+        keyPoints: []
       };
       this.tagsInput = '';
+
+      // Success alert
+      alert('Tour successfully created!');
     },
     error: (err) => {
-      console.error('Greška pri kreiranju ture:', err);
+      console.error('Error creating tour:', err);
+
+      // Failure alert
+      alert('Failed to create tour. Please try again.');
     }
   });
 }
