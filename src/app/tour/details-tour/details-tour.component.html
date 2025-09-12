@@ -1,0 +1,51 @@
+<!-- Display existing tours -->
+<div class="tours-section">
+  <div class="section-header">
+    <h2 class="section-title">My Tours</h2>
+  </div>
+  
+  <div class="tours-grid">
+    <div *ngFor="let tour of tours" class="tour-card" [ngClass]="tour.status">
+      
+      <!-- Header with status and price -->
+      <div class="card-header">
+        <div class="status-badge" [ngClass]="tour.status">
+          {{ tour.status }}
+        </div>
+        <div class="price-info">
+          <span class="price">{{ tour.price }} RSD</span>
+          <span *ngIf="tour.price === 0" class="price-note">(starting price)</span>
+        </div>
+      </div>
+
+      <!-- Tour title -->
+      <div class="title-section">
+        <span class="field-label">Tour Name</span>
+        <h3 class="tour-name">{{ tour.name }}</h3>
+      </div>
+      
+      <!-- Description and difficulty in the same row -->
+      <div class="content-row">
+        <div class="description-section">
+          <span class="field-label">Description</span>
+          <p class="tour-description">{{ tour.description }}</p>
+        </div>
+        <div class="difficulty-section">
+          <span class="field-label">Difficulty</span>
+          <div class="difficulty-badge" [ngClass]="tour.difficulty?.toLowerCase()">
+            {{ tour.difficulty }}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tags -->
+      <div class="tags-section">
+        <span class="field-label">Tags</span>
+        <div class="tour-tags">
+          <span *ngFor="let tag of tour.tags" class="tag">{{ tag }}</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

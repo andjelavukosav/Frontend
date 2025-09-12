@@ -23,6 +23,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CreateBlogDialogComponent } from './blog/components/create-blog-dialog/create-blog-dialog.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { BlogDetailsComponent } from './blog/components/blog-details/blog-details.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
+import { CreateTourComponent } from './tour/create-tour/create-tour.component';
+import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { BlogDetailsComponent } from './blog/components/blog-details/blog-detail
     UserBlogsComponent,
     CreateBlogDialogComponent,
     BlogDetailsComponent,
+    ConfirmDialogComponent,
+    CreateTourComponent,
+    DetailsTourComponent
   ],
   imports: [
     BrowserModule,

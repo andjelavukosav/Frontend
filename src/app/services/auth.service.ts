@@ -14,7 +14,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/users'; // Go backend endpoint
-  user$ = new BehaviorSubject<User>({username: "", id: 0, email: "", role: "" });
+  user$ = new BehaviorSubject<User>({username: "", id: '', email: "", role: "" });
 
   constructor(private http: HttpClient,
     private router: Router,
@@ -23,8 +23,8 @@ export class AuthService {
 
    register(registration: Registration): Observable<AuthenticationResponse> {
     return this.http
-    .post<AuthenticationResponse>(this.apiUrl, registration)
-    .pipe(
+      .post<AuthenticationResponse>(`${this.apiUrl}/register`, registration)
+      .pipe(
       tap((authenticationResponse) => {
         this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
         this.setUser();
@@ -46,7 +46,7 @@ export class AuthService {
    logout(): void {
     this.router.navigate(['/home']).then(_ => {
       this.tokenStorage.clear();
-      this.user$.next({username: "", id: 0, email: "", role: "" });
+      this.user$.next({username: "", id: '', email: "", role: "" });
       }
     );
   }
@@ -63,7 +63,7 @@ export class AuthService {
     const jwtHelperService = new JwtHelperService();
     const accessToken = this.tokenStorage.getAccessToken() || "";
     const user: User = {
-      id: +jwtHelperService.decodeToken(accessToken).id,
+      id: jwtHelperService.decodeToken(accessToken).id,
       username: jwtHelperService.decodeToken(accessToken).username,
       email: jwtHelperService.decodeToken(accessToken).email,
       role: jwtHelperService.decodeToken(accessToken)[
@@ -74,6 +74,6 @@ export class AuthService {
   }
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>('http://localhost:8080/users/all');
+    return this.http.get<User[]>('http://localhost:8080/admin/users/all');
   }
 }
