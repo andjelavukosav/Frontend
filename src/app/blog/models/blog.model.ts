@@ -5,4 +5,5 @@ export interface Blog {
     createdAt: string;
     userId: string;
     images?: string[];
+    username: string;
 }

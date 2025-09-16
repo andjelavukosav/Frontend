@@ -4,5 +4,6 @@ export interface Comment {
 	userId: string,
 	content: string,
 	createdAt: string,
-	updatedAt: string
+	updatedAt: string,
+	username: string
 }

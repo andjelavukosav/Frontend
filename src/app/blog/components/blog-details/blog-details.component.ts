@@ -47,6 +47,17 @@ data?: BlogDetailsRead;
     });
   }
 
+  // Za grid slika
+trackByIndex(index: number): number {
+  return index;
+}
+
+// Za komentare (ako koristiš trackBy u listi komentara)
+trackByComment(index: number, c: Comment): string | number {
+  return c?.id ?? index;
+}
+
+
   submitComment() {
   if (!this.newComment.trim()) return;
 
