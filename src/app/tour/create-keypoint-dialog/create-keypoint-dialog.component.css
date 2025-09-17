@@ -1,0 +1,46 @@
+/* Osnovni padding i layout */
+:host ::ng-deep .mat-dialog-container {
+  padding: 24px;
+  border-radius: 12px; /* Blago zaobljeni uglovi */
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Full width form fields */
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Koordinate display */
+.coords-display {
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Dugmad na dnu */
+.mat-dialog-actions {
+  margin-top: 16px;
+}
+
+/* Stil dugmeta Cancel */
+.mat-dialog-actions button {
+  min-width: 80px;
+}
+
+/* Save dugme */
+.mat-dialog-actions button[color="primary"] {
+  background-color: #004d3b;
+  color: white;
+}
+
+.mat-dialog-actions button[color="primary"]:hover {
+  background-color: #00664f;
+}
