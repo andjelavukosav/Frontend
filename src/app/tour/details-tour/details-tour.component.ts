@@ -4,7 +4,10 @@ import { Tour } from '../model/create-tour.model';
 import { TourService } from 'src/app/services/tour.service';
 import { User } from 'src/app/auth/model/user.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { KeyPoint } from '../model/keypoint.model';
+import { KeyPoint, KeyPointDialogData } from '../model/keypoint.model';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateKeypointDialogComponent } from '../create-keypoint-dialog/create-keypoint-dialog.component';
+import { KeyPointDetailsDialogComponent } from '../key-point-details-dialog/key-point-details-dialog.component';
 
 @Component({
   selector: 'app-details-tour',
@@ -18,19 +21,14 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
   private pointMaps: { [key: string]: L.Map } = {}; 
   showPointsMap: { [tourId: string]: boolean } = {};
 
-  newPoint: KeyPoint = {
-    name: '',
-    description: '',
-    latitude: 0,
-    longitude: 0,
-    imageURL: ''
-  };
-
   activeTourForForm: Tour | null = null;
   private formMap: L.Map | null = null;
-  private formMarker: L.Marker | null = null;
 
-  constructor(private tourService: TourService, private authService: AuthService) {}
+  constructor(
+    private tourService: TourService, 
+    private authService: AuthService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
@@ -38,58 +36,28 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
       this.loadTours();
     });
   }
-  toggleKeyPoints(tour: Tour): void {
-  if (tour.id) {
-    // Prebacivanje stanja za datu turu
-    this.showPointsMap[tour.id] = !this.showPointsMap[tour.id];
 
-    // Ako je prikaz omogućio, inicijalizujte mape
-    if (this.showPointsMap[tour.id]) {
-      setTimeout(() => {
-        tour.keyPoints.forEach(point => {
-          if (point.id) {
-            this.initPointMap(point.id, point.latitude, point.longitude);
-          }
-        });
-      }, 100);
-    }
-  }
-  }
-
-  ngAfterViewInit(): void {
-    // Inicijalizacija mapa nakon što se pogled (view) renderuje
-    this.tours.forEach(tour => {
-      tour.keyPoints.forEach(point => {
-        if (point.id) { // Proverite da li point ima id
-          this.initPointMap(point.id, point.latitude, point.longitude);
-        }
-      });
-    });
-  }
-
-  private initPointMap(pointId: string, lat: number, lng: number): void {
-    const mapId = `map-${pointId}`;
-
-    // Provera da li mapa već postoji kako bi se izbegla ponovna inicijalizacija
-    if (this.pointMaps[mapId]) {
-      this.pointMaps[mapId].remove();
-      delete this.pointMaps[mapId];
-    }
-
-    const map = L.map(mapId).setView([lat, lng], 14);
-    this.pointMaps[mapId] = map;
+  private initTourMap(tour: Tour) {
+    if (this.pointMaps[tour.id!]) return; //vec postoji
+    
+    const mapId = `map-tour-${tour.id}`;
+    const map = L.map(mapId).setView([44.787197, 20.457273], 12); // default Beograd
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    L.marker([lat, lng]).addTo(map);
+    // Klik handler za dodavanje novog key point-a
+    map.on('click', (e: L.LeafletMouseEvent) => {
+        this.openForm(tour, e.latlng.lat, e.latlng.lng);
+    });
 
-    // Prilagodite veličinu mape nakon renderovanja
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
+    // Sačuvaj mapu (opcionalno za kasnije)
+    this.pointMaps[tour.id!] = map;
+    this.refreshTourMap(tour); // iscrtaj markere/linije
   }
+
+  
   // Koristi ngOnDestroy da očisti resurse mape kad se komponenta uništi
   ngOnDestroy(): void {
     if (this.formMap) {
@@ -98,27 +66,27 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
   }
 
   loadTours(): void {
-  if (!this.user) return;
-  this.tourService.getAuthorTours(this.user.id).subscribe({
-    next: tours => {
-      this.tours = tours.map(t => ({
-        ...t,
-        keyPoints: t.keyPoints ?? []
-      }));
+    if (!this.user) return;
+    this.tourService.getAuthorTours(this.user.id).subscribe({
+      next: tours => {
+        this.tours = tours.map(t => ({
+          ...t,
+          keyPoints: t.keyPoints ?? []
+        }));
 
-      // Inicijalizujte showPointsMap za sve ture
-      this.tours.forEach(tour => {
-        if (tour.id) {
-          this.showPointsMap[tour.id] = false; // Postavite početno stanje na sakriveno
-        }
-      });
-
-      // Uklonite setTimeout() za inicijalizaciju mapa ovde jer će sada
-      // to raditi toggleKeyPoints() metoda.
-    },
-    error: err => console.error(err)
-  });
-}
+        // Inicijalizujte showPointsMap za sve ture
+        this.tours.forEach(tour => {
+          if (tour.id) {
+            this.showPointsMap[tour.id] = true; // Postavite početno stanje na sakriveno
+            
+            //inicijalizacija mapre za ovu turu 
+            setTimeout(() => this.initTourMap(tour), 0); 
+          }
+        });
+      },
+      error: err => console.error(err)
+    });
+  }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -127,129 +95,140 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
     }
   }
 
-  // Otvara formu i inicijalizuje mapu
-  openForm(tour: Tour) {
-    this.activeTourForForm = tour;
-    this.resetForm();
+  openForm(tour: Tour, initialLat?: number, initialLng?: number) {
+    const dialogRef = this.dialog.open(CreateKeypointDialogComponent, {
+      width: '450px',
+      data: {
+        tourId: tour.id,
+        latitude: initialLat || 44.787197,  // Beograd default
+        longitude: initialLng || 20.457273,
+        keyPoint: undefined
+      } as KeyPointDialogData,
+      disableClose: false  // omogucava zatvaranje klikom izvan dijaloga
+    });
 
-    // Čeka da DOM bude renderovan, pa inicijalizuje mapu
-    setTimeout(() => {
-      this.initFormMap(tour.id || "");
-    }, 100);
+    dialogRef.afterClosed().subscribe((newKeyPoint: KeyPoint | undefined) => {
+      if (!newKeyPoint) return;
+
+      this.reloadTour(tour.id!);
+      return;
+    });
   }
 
- // U DetailsTourComponent.ts
-// ... (your existing imports and component setup) ...
+  addMarkerForKeyPoint(keyPoint: KeyPoint, map: L.Map, tour: Tour) {
+    const marker = L.marker([keyPoint.latitude, keyPoint.longitude]).addTo(map);
+    
+    // Popup koji se vidi na hover
+    const popupContent = `
+        <h3>${keyPoint.name} (Order: ${keyPoint.order})</h3>
+        <p>${keyPoint.description}</p>
+        <img src="http://localhost:8080/tours/uploads/${keyPoint.imageURL}" 
+             alt="${keyPoint.name}" style="width:100px;height:auto;">
+    `;
+    // bindTooltip je za hover
+    marker.bindTooltip(popupContent, { direction: 'top', offset: [0, -10], permanent: false }); 
 
-addKeyPoint(tour: Tour) {
-  if (
-    this.newPoint.name &&
-    this.newPoint.description &&
-    this.newPoint.latitude &&
-    this.newPoint.longitude
-  ) {
-    if (!tour.id) {
-        alert('ID ture nije dostupan.');
+
+    marker.on('click', () => {
+      this.openKeyPointDialog(keyPoint, tour);
+    });
+  }
+
+  drawTourLine(tour: Tour, map: L.Map) {
+    if(!tour.keyPoints || tour.keyPoints.length < 2) return;
+
+    // Sortiraj keyPoint po order
+    const points = [...tour.keyPoints].sort((a, b) => a.order - b.order);
+
+    // Kreiraj niz koordinata
+    const latLngs = points.map(p => [p.latitude, p.longitude] as [number, number]);
+
+    // Nacrtaj Polyline
+    const polyline = L.polyline(latLngs, { color: 'blue', weight: 3 }).addTo(map);
+
+    // fit mapu da obuhvati sve tačke
+    const group = L.featureGroup(points.map(p => L.marker([p.latitude, p.longitude])));
+    map.fitBounds(group.getBounds().pad(0.2));
+  }
+
+  openKeyPointDialog(keyPoint: KeyPoint, tour: Tour) {
+    const dialogRef = this.dialog.open(KeyPointDetailsDialogComponent, {
+      width: '80vw',
+      maxWidth: '650px',
+      maxHeight: '80vh',
+      data: { tour, keyPoint },
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+
+      // DELETE 
+      if (result.deleted) {
+        this.reloadTour(tour.id!);
         return;
-    }
+      }
 
-    const formData = new FormData();
-    formData.append('tourId', tour.id);
-    formData.append('name', this.newPoint.name);
-    formData.append('description', this.newPoint.description);
-    formData.append('latitude', this.newPoint.latitude.toString());
-    formData.append('longitude', this.newPoint.longitude.toString());
+      // UPDATE 
+      const updatedKeyPoint: KeyPoint = result;
+      console.log('Updated key point: ', updatedKeyPoint);
 
-    if (this.selectedFile) {
-      formData.append('file', this.selectedFile);
-    }
+      if(updatedKeyPoint.order !== keyPoint.order) {
+        this.reloadTour(tour.id!);
+        return;
+      }
 
-    // Call the service to upload the file and add the KeyPoint
-    this.tourService.addKeyPoint(formData).subscribe({
-      next: (savedPoint: KeyPoint) => {
-        // Step 1: Add the new point to the local array
-        tour.keyPoints.push(savedPoint);
-        
-        // Step 2: Manually initialize the map for the new point
-        // Use a slight delay to ensure the DOM element is rendered
-        setTimeout(() => {
-          if (savedPoint.id) {
-            this.initPointMap(savedPoint.id, savedPoint.latitude, savedPoint.longitude);
+      // Ako se order nije mijenjao samo update-uj lokalno
+      const index = tour.keyPoints.findIndex(kp => kp.id === updatedKeyPoint.id);
+      if (index > -1) {
+        tour.keyPoints[index] = updatedKeyPoint;
+      }
+
+      // 2. Osvjezi mapu
+      this.refreshTourMap(tour);
+    });
+  }
+
+  private reloadTour(tourId: string) {
+    this.tourService.getTourById(tourId).subscribe({
+      next: refreshedTour => {
+        const tourIndex = this.tours.findIndex(t => t.id === tourId);
+        if (tourIndex > -1) {
+          this.tours[tourIndex] = {
+            ...refreshedTour,
+            keyPoints: refreshedTour.keyPoints ?? []
+          };
+          // Obrisi staru mapu ako postoji
+          const oldMap = this.pointMaps[tourId];
+          if (oldMap) {
+            oldMap.remove();
+            delete this.pointMaps[tourId];
           }
-        }, 100);
 
-        // Step 3: Close the form
-        this.cancelForm();
+          // Ponovo inicijalizuj mapu
+          setTimeout(() => this.initTourMap(this.tours[tourIndex]), 0);
+        }
       },
-      error: (err) => {
-        console.error('Greška pri dodavanju ključne tačke:', err);
-        alert('Došlo je do greške pri dodavanju ključne tačke.');
-      }
+      error: err => console.error(err)
     });
-  } else {
-    alert('Molimo popunite sva obavezna polja i odaberite lokaciju na mapi.');
-  }
-}
-
-  // Zatvara formu i čisti resurse mape
-  cancelForm() {
-    this.activeTourForForm = null;
-    this.resetForm();
-    if (this.formMap) {
-      this.formMap.remove(); // Uništenje mape
-      this.formMap = null;
-      this.formMarker = null;
-    }
   }
 
-  // Poništava vrednosti u formi
-  private resetForm() {
-    this.newPoint = {
-      name: '',
-      description: '',
-      latitude: 0,
-      longitude: 0,
-      imageURL: ''
-    };
-  }
+  private refreshTourMap(tour: Tour) {
+    const map = this.pointMaps[tour.id!];
+    if (!map) return;
 
-  // Inicijalizuje mapu i dodaje interakciju
-  private initFormMap(tourId: string) {
-    if (this.formMap) {
-      this.formMap.remove();
-    }
-
-    const mapId = `map-${tourId}`;
-    this.formMap = L.map(mapId).setView([44.787197, 20.457273], 12);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(this.formMap);
-
-    // Dodaj slušač za klik na mapi
-    this.formMap.on('click', (e: L.LeafletMouseEvent) => {
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
-      this.setCoordinates(lat, lng);
-
-      // Ukloni stari marker
-      if (this.formMarker) {
-        this.formMap!.removeLayer(this.formMarker);
-      }
-      
-      // Dodaj novi marker
-      this.formMarker = L.marker([lat, lng]).addTo(this.formMap!);
+    // Očisti postojeće markere i linije
+    map.eachLayer(layer => {
+      if (layer instanceof L.Marker) layer.remove();
+      if (layer instanceof L.Polyline) layer.remove();
     });
 
-    // Podesi veličinu mape nakon renderovanja
-    setTimeout(() => {
-      this.formMap!.invalidateSize();
-    }, 200);
+    // Ponovo iscrtaj sa sortiranjem
+    const sortedPoints = [...tour.keyPoints].sort((a, b) => a.order - b.order);
+
+    sortedPoints.forEach(kp => this.addMarkerForKeyPoint(kp, map, tour));
+    this.drawTourLine(tour, map);
   }
 
-  // Ažurira koordinate u modelu forme
-  private setCoordinates(lat: number, lng: number) {
-    this.newPoint.latitude = lat;
-    this.newPoint.longitude = lng;
-  }
+
 }

@@ -40,10 +40,10 @@ export class CreateTourComponent implements OnInit {
   loadTours(): void {
   if (!this.user) return;
 
-  this.tourService.getAuthorTours(this.user.id).subscribe({
+  /*this.tourService.getAuthorTours(this.user.id).subscribe({
     next: (data) => this.tours = data,
     error: (err) => console.error(err)
-  });
+  });*/
 }
 
 
