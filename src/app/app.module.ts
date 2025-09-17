@@ -30,6 +30,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import './leaflet-config';
+import { CreateKeypointDialogComponent } from './tour/create-keypoint-dialog/create-keypoint-dialog.component';
+import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/key-point-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     BlogDetailsComponent,
     ConfirmDialogComponent,
     CreateTourComponent,
-    DetailsTourComponent
+    DetailsTourComponent,
+    CreateKeypointDialogComponent,
+    KeyPointDetailsDialogComponent
   ],
   imports: [
     BrowserModule,

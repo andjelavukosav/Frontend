@@ -4,7 +4,7 @@
   </div>
 
   <div class="tours-grid">
-    <div *ngFor="let tour of tours" class="tour-card" [ngClass]="tour.status">
+    <div *ngFor="let tour of tours" class="tour-card">
 
       <div class="card-header">
         <div class="status-badge" [ngClass]="tour.status">
@@ -26,12 +26,6 @@
           <span class="field-label">Description</span>
           <p class="tour-description">{{ tour.description }}</p>
         </div>
-        <div class="difficulty-section">
-          <span class="field-label">Difficulty</span>
-          <div class="difficulty-badge" [ngClass]="tour.difficulty.toLowerCase()">
-            {{ tour.difficulty }}
-          </div>
-        </div>
       </div>
 
       <div class="tags-section">
@@ -41,56 +35,10 @@
         </div>
       </div>
 
-       <div class="key-points-section">
-        <h3>Key Points</h3>
-
-        <div class="key-point-actions">
-          <button (click)="openForm(tour)">+ Add Key Point</button>
-          
-          <ng-container *ngIf="tour.id">
-            <button (click)="toggleKeyPoints(tour)">
-              {{ showPointsMap[tour.id] ? 'Hide Points' : 'Show Points' }}
-            </button>
-          </ng-container>
-        </div>
-
-        <div *ngIf="tour.id && showPointsMap[tour.id]" class="key-points-content">
-          <div *ngIf="tour.keyPoints.length > 0; else noPoints">
-            <div *ngFor="let point of tour.keyPoints" class="key-point">
-              <h4>{{ point.name }}</h4>
-              <p>{{ point.description }}</p>
-              <img *ngIf="point.imageURL" [src]="point.imageURL" />
-              <p>Lat: {{ point.latitude }}, Lng: {{ point.longitude }}</p>
-              <div id="map-{{ point.id }}" class="map-container-point"></div>
-            </div>
-          </div>
-          <ng-template #noPoints>
-            <p>No key points yet.</p>
-          </ng-template>
-        </div>
-
-        <div [hidden]="activeTourForForm !== tour" class="key-point-form">
-          <input type="text" placeholder="Name" [(ngModel)]="newPoint.name" />
-          <textarea placeholder="Description" [(ngModel)]="newPoint.description"></textarea>
-
-          <input type="file" (change)="onFileSelected($event)" />
-
-          <div class="coordinates-input">
-            <label for="latitude">Latitude:</label>
-            <input type="number" id="latitude" placeholder="Latitude" [(ngModel)]="newPoint.latitude" />
-            <label for="longitude">Longitude:</label>
-            <input type="number" id="longitude" placeholder="Longitude" [(ngModel)]="newPoint.longitude" />
-          </div>
-
-          <p *ngIf="newPoint.latitude && newPoint.longitude" class="selected-coords">
-            Odabrana pozicija: Lat {{ newPoint.latitude | number:'1.4-4' }}, Lng {{ newPoint.longitude | number:'1.4-4' }}
-          </p>
-
-          <div id="map-{{tour.id}}" class="map-container"></div>
-
-          <button (click)="addKeyPoint(tour)">Save Key Point</button>
-          <button (click)="cancelForm()">Cancel</button>
-        </div>
+      <!-- Glavna mapa ture -->
+      <div class="key-points-section">
+        <h3>Key Points on Map</h3>
+        <div *ngIf="showPointsMap[tour.id!]" id="map-tour-{{tour.id}}" class="tour-map-container"></div>
       </div>
     </div>
   </div>

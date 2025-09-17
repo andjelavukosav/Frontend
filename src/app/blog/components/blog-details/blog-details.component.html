@@ -115,14 +115,82 @@
             {{ c.userId?.slice(0,1) | uppercase }}
           </div>
 
-          <div class="comment-body">
-            <div class="comment-header">
-              <span class="author">{{ c.userId }}</span>
-              <span class="dot">•</span>
-              <span class="date">{{ c.createdAt | date:'medium' }}</span>
-            </div>
-            <p class="comment-content">{{ c.content }}</p>
-          </div>
+  <div class="comment-body">
+  <div class="comment-header-row">
+    <div class="comment-header">
+      <span class="author">{{ c.userId }}</span>
+      <span class="dot">•</span>
+      <span class="date">{{ c.createdAt | date:'medium' }}</span>
+    </div>
+
+    <!-- Edit dugme prikazujemo samo kad nije u edit modu -->
+    <div class="comment-actions" *ngIf="editingId !== c.id">
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Edit comment"
+        matTooltip="Edit comment"
+        (click)="onEditComment(c)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- VIEW MODE -->
+  <p class="comment-content" *ngIf="editingId !== c.id">
+    {{ c.content }}
+  </p>
+
+  <!-- EDIT MODE -->
+  <form *ngIf="editingId === c.id" (ngSubmit)="saveEdit(c)" class="edit-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Edit your comment</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="editModel"
+        name="editModel{{ c.id }}"
+        rows="3"
+        [maxlength]="maxCommentLen"
+        required
+        (keydown.escape)="cancelEdit()"
+        (keydown.control.enter)="saveEdit(c)"
+        (keydown.meta.enter)="saveEdit(c)"
+        placeholder="Update your comment…"
+      ></textarea>
+      <mat-hint align="end">{{ (editModel?.length || 0) }} / {{ maxCommentLen }}</mat-hint>
+    </mat-form-field>
+
+    <div class="edit-actions">
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="cancelEdit()"
+        [disabled]="savingEdit[c.id]"
+      >
+        Cancel
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="savingEdit[c.id] || !editModel?.trim() || editModel === c.content"
+      >
+        <mat-progress-spinner
+          *ngIf="savingEdit[c.id]"
+          diameter="16"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        <span *ngIf="!savingEdit[c.id]">Save</span>
+      </button>
+    </div>
+
+    <div class="edit-error" *ngIf="editError">{{ editError }}</div>
+  </form>
+</div>
+
+
         </div>
       </mat-card-content>
     </mat-card>

@@ -143,3 +143,46 @@
 .page {
   margin-top: 64px; /* prilagodi da ne seče sadržaj */
 }
+
+/* Raspored zaglavlja komentara: levo meta, desno dugme */
+.comment-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.comment-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.75);
+}
+
+/* Desna strana – akcije (Edit) */
+.comment-actions {
+  margin-left: auto;       /* gura dugme skroz desno */
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Fino poravnanje ikon-dugmeta sa tekstom */
+.comment-actions .mat-mdc-icon-button {
+  width: 36px;
+  height: 36px;
+}
+
+/* Vizuelna konzistencija sa ostatkom kartice */
+.comment-content {
+  margin: 0;               /* već ima spacing iznad preko headera */
+  line-height: 1.5;
+}
+
+/* Ako želiš diskretnu podelu između komentara */
+.comment-item + .comment-item {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+

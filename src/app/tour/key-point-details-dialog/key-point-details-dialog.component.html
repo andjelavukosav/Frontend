@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Edit Key Point</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="keyPoint.name">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="keyPoint.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Order</mat-label>
+    <input type="number"  min="1" matInput [(ngModel)]="keyPoint.order">
+  </mat-form-field>
+
+  
+  <label for="image">Image</label>
+  <input id="image" type="file" (change)="onImageSelected($event)">
+
+  <img *ngIf="previewImage" [src]="previewImage" alt="Preview" style="width:100px; margin-top:10px;">
+
+
+  <div id="keypoint-map" style="height: 300px; margin-top: 10px;"></div>
+
+  <p>Latitude: {{ keyPoint.latitude }}, Longitude: {{ keyPoint.longitude }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="left-actions">
+    <button mat-raised-button color="warn" (click)="deleteKeyPoint()">
+      Delete Key Point
+    </button>
+  </div>
+
+  <div class="right-actions">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary"
+            (click)="save()"
+            [disabled]="!hasChanges()">Save</button>
+  </div>
+</mat-dialog-actions>

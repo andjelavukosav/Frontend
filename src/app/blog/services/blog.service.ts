@@ -70,4 +70,8 @@ export class BlogService {
     });
     return this.http.post(`${this.apiUrl}/${blogId}/comments`, { content }, { headers });
   }
+
+  updateComment(commentId: string | number, body: { content: string }) {
+    return this.http.put<any>(`${this.apiUrl}/comments/${commentId}`, body);
+  }
 }
