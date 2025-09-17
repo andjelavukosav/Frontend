@@ -1,0 +1,26 @@
+<div class="position-simulator-container">
+  <h2>Position Simulator</h2>
+  
+  <p>Click on the map to set your current position.</p>
+
+  <div id="map" class="map"></div>
+
+  <div class="position-info">
+    <p><strong>Current Position:</strong></p>
+    <p *ngIf="hasPosition">Latitude: {{ latitude }}</p>
+    <p *ngIf="hasPosition">Longitude: {{ longitude }}</p>
+    <p *ngIf="!hasPosition">No position yet</p>
+  </div>
+
+
+  <button *ngIf="position" (click)="savePosition()" class="save-btn">
+    Save Position
+  </button>
+  <button
+   *ngIf="canUndo"
+    (click)="undoPosition()"
+    class="save-btn">
+    Undo
+  </button>
+
+</div>
