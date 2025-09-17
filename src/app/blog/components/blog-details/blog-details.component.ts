@@ -12,7 +12,7 @@ import { Comment } from '../../models/comment.model';
   styleUrls: ['./blog-details.component.css']
 })
 export class BlogDetailsComponent implements OnInit{
-data?: BlogDetailsRead;
+  data?: BlogDetailsRead;
   isLoading = true;
   error?: string;
   safeDescription?: SafeHtml;
@@ -64,8 +64,21 @@ trackByComment(index: number, c: Comment): string | number {
   this.isSubmitting = true;
   this.blogService.createComment(this.blogId, this.newComment.trim()).subscribe({
     next: (created: any) => {
-      // Optimistički ubaci u listu komentara (ako već prikazuješ)
-      this.data?.comments?.unshift(created);
+      const mappedComment: Comment = {
+        id: created.id,
+        blogId: created.blog_id,
+        userId: created.user_id,
+        content: created.content,
+        createdAt: created.created_at,
+        updatedAt: created.updated_at
+      };
+      if(this.data){
+        this.data = {
+          ...this.data,
+          comments: [mappedComment, ...(this.data?.comments ?? [])]
+        };
+      }
+
       this.newComment = '';
       this.isSubmitting = false;
     },

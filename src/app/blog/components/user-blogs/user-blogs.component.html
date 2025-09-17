@@ -18,7 +18,7 @@
         
         <!-- Prikaz slika -->
         <div class="blog-images" *ngIf="blog.images && blog.images.length > 0">
-          <img *ngFor="let img of blog.images" [src]="'http://localhost:8082' + img" alt="Blog Image" class="blog-image"/>
+          <img *ngFor="let img of blog.images" [src]="img" alt="Blog Image" class="blog-image"/>
         </div>
         <small>Created at: {{ blog.createdAt | date:'medium' }}</small>
         <button class="view-details-btn" (click)="viewBlogDetails(blog.id)">
