@@ -70,4 +70,14 @@ export class BlogService {
     });
     return this.http.post(`${this.apiUrl}/${blogId}/comments`, { content }, { headers });
   }
+
+  updateComment(commentId: string | number, body: { content: string }) {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token ?? ''}`
+  });
+  return this.http.put<any>(`${this.apiUrl}/comments/${commentId}`, body, { headers });
+}
+
 }

@@ -1,92 +1,198 @@
-<main class="blog-details-container" *ngIf="!isLoading; else loadingTpl">
-  <div *ngIf="error" class="error-banner">
-    {{ error }}
+<app-navbar></app-navbar>
+<div class="page">
+  <!-- Loading state -->
+  <div class="center" *ngIf="isLoading">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
   </div>
 
-  <section *ngIf="data?.blog as blog" class="blog-details-card">
-    <!-- Header sa naslovom i datumom -->
-    <header class="blog-details-header">
-      <h1>{{ blog.title }}</h1>
-      <small>{{ blog.createdAt | date: 'mediumDate' }}</small>
-    </header>
+  <!-- Error state -->
+  <mat-card class="error-card" *ngIf="!isLoading && error">
+    <mat-card-title>Error</mat-card-title>
+    <mat-card-content>{{ error }}</mat-card-content>
+  </mat-card>
 
-    <!-- Opis -->
-    <div class="blog-description" [innerHTML]="safeDescription"></div>
-
-    <!-- Slike -->
-    <div class="blog-images">
-      <img
-        *ngFor="let img of blog.images"
-        [src]="img"
-        class="blog-image"
-        alt="blog image"
-      />
-    </div>
-
-    <!-- Komentari -->
-    <section class="comments-section">
-      <h3>Comments</h3>
-      <div *ngIf="!data?.comments?.length" class="no-comments">
-        No comments yet. Be the first!
-      </div>
-
-      <div *ngFor="let comment of data?.comments" class="comment-card">
-        <div class="comment-header">
-          <strong>User {{ comment.userId }}</strong>
-          <small>{{ comment.createdAt | date:'short' }}</small>
+  <!-- Content -->
+  <ng-container *ngIf="!isLoading && data">
+    <!-- BLOG CARD -->
+    <mat-card class="blog-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar">
+          {{ data.blog.title | slice:0:1 | uppercase }}
         </div>
-        <p class="comment-body">{{ comment.content }}</p>
-      </div>
-    </section>
+        <mat-card-title class="title">{{ data.blog.title }}</mat-card-title>
+        <mat-card-subtitle class="subtitle">
+          <span class="meta">
+            <mat-icon inline>schedule</mat-icon>
+            {{ data.blog.createdAt | date:'mediumDate' }}
+          </span>
+          <span class="dot">•</span>
+          <span class="meta">
+            <mat-icon inline>person</mat-icon>
+            {{ data.blog.userId }}
+          </span>
+        </mat-card-subtitle>
+      </mat-card-header>
 
-    <!-- Forma za komentar -->
-    <section class="add-comment">
-      <div class="comment-card">
-        <header class="comment-card__header">
-          <h3><span class="icon">💬</span> Add a Comment</h3>
-          <small class="muted">Be polite & constructive.</small>
-        </header>
+      <mat-divider></mat-divider>
 
-        <form (ngSubmit)="submitComment()" #commentForm="ngForm" class="comment-form" novalidate>
-          <textarea
-            name="comment"
-            [(ngModel)]="newComment"
-            placeholder="Share your thoughts…"
-            rows="4"
-            required
-            [attr.maxlength]="maxCommentLen"
-          ></textarea>
+      <mat-card-content>
+        <!-- Responsive images grid (if images exist) -->
+        <div class="image-grid" *ngIf="data.blog.images?.length">
+          <img
+            *ngFor="let img of data.blog.images; trackBy: trackByIndex"
+            [src]="img"
+            alt="blog image"
+            loading="lazy"
+          />
+        </div>
 
-          <div class="comment-form__meta">
-            <span class="counter">{{ (newComment?.length || 0) }}/{{ maxCommentLen }}</span>
-            <div class="spacer"></div>
+        <!-- Markdown description (sanitized) -->
+        <div class="markdown" [innerHTML]="safeDescription"></div>
+      </mat-card-content>
+    </mat-card>
 
+    <!-- COMMENT FORM -->
+    <mat-card class="comment-form-card">
+      <mat-card-title>Leave a comment</mat-card-title>
+      <mat-card-content>
+        <form (ngSubmit)="submitComment()" #commentForm="ngForm" class="comment-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Your comment</mat-label>
+            <textarea
+              matInput
+              name="comment"
+              [(ngModel)]="newComment"
+              rows="4"
+              [maxlength]="maxCommentLen"
+              placeholder="Be constructive and kind 🙂"
+              required
+            ></textarea>
+            <mat-hint align="start">Max {{ maxCommentLen }} characters</mat-hint>
+            <mat-hint align="end">{{ newComment?.length || 0 }} / {{ maxCommentLen }}</mat-hint>
+          </mat-form-field>
+
+          <div class="actions">
             <button
+              mat-stroked-button
               type="button"
-              class="btn btn-ghost"
-              (click)="newComment = ''"
+              (click)="newComment=''"
               [disabled]="isSubmitting || !(newComment?.length)"
             >
               Clear
             </button>
 
             <button
+              mat-raised-button
+              color="primary"
               type="submit"
-              class="btn btn-primary"
-              [disabled]="isSubmitting || !commentForm.valid"
+              [disabled]="isSubmitting || !newComment?.trim()"
             >
-              <span *ngIf="isSubmitting">Sending…</span>
-              <span *ngIf="!isSubmitting">Post Comment</span>
+              <mat-progress-spinner
+                *ngIf="isSubmitting"
+                diameter="16"
+                mode="indeterminate"
+              ></mat-progress-spinner>
+              <span *ngIf="!isSubmitting">Post comment</span>
             </button>
           </div>
         </form>
-      </div>
-    </section>
-  </section>
-</main>
+      </mat-card-content>
+    </mat-card>
 
-<ng-template #loadingTpl>
-  <div class="state">
-    <p>Loading blog details…</p>
+    <!-- COMMENTS LIST -->
+    <mat-card class="comments-card">
+      <mat-card-title>Comments ({{ data.comments?.length || 0 }})</mat-card-title>
+      <mat-card-content>
+        <div class="empty" *ngIf="!data.comments?.length">
+          No comments yet. Be the first! ✍️
+        </div>
+
+        <div
+          class="comment-item"
+          *ngFor="let c of data.comments; trackBy: trackByComment"
+        >
+          <div class="comment-avatar">
+            {{ c.userId?.slice(0,1) | uppercase }}
+          </div>
+
+  <div class="comment-body">
+  <div class="comment-header-row">
+    <div class="comment-header">
+      <span class="author">{{ c.userId }}</span>
+      <span class="dot">•</span>
+      <span class="date">{{ c.createdAt | date:'medium' }}</span>
+    </div>
+
+    <!-- Edit dugme prikazujemo samo kad nije u edit modu -->
+    <div class="comment-actions" *ngIf="editingId !== c.id">
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Edit comment"
+        matTooltip="Edit comment"
+        (click)="onEditComment(c)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
   </div>
-</ng-template>
+
+  <!-- VIEW MODE -->
+  <p class="comment-content" *ngIf="editingId !== c.id">
+    {{ c.content }}
+  </p>
+
+  <!-- EDIT MODE -->
+  <form *ngIf="editingId === c.id" (ngSubmit)="saveEdit(c)" class="edit-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Edit your comment</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="editModel"
+        name="editModel{{ c.id }}"
+        rows="3"
+        [maxlength]="maxCommentLen"
+        required
+        (keydown.escape)="cancelEdit()"
+        (keydown.control.enter)="saveEdit(c)"
+        (keydown.meta.enter)="saveEdit(c)"
+        placeholder="Update your comment…"
+      ></textarea>
+      <mat-hint align="end">{{ (editModel?.length || 0) }} / {{ maxCommentLen }}</mat-hint>
+    </mat-form-field>
+
+    <div class="edit-actions">
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="cancelEdit()"
+        [disabled]="savingEdit[c.id]"
+      >
+        Cancel
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="savingEdit[c.id] || !editModel?.trim() || editModel === c.content"
+      >
+        <mat-progress-spinner
+          *ngIf="savingEdit[c.id]"
+          diameter="16"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        <span *ngIf="!savingEdit[c.id]">Save</span>
+      </button>
+    </div>
+
+    <div class="edit-error" *ngIf="editError">{{ editError }}</div>
+  </form>
+</div>
+
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>

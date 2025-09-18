@@ -21,6 +21,13 @@ export class BlogDetailsComponent implements OnInit{
   isSubmitting = false;
   blogId: string = '';
 
+  editingId: string | number | null = null;
+  editModel = '';
+  savingEdit: Record<string | number, boolean> = {};
+  editError: string | null = null;
+  // (opciono) ako želiš kontrolu ko sme da edituje
+  currentUserId?: string;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +53,17 @@ export class BlogDetailsComponent implements OnInit{
       }
     });
   }
+
+  // Za grid slika
+trackByIndex(index: number): number {
+  return index;
+}
+
+// Za komentare (ako koristiš trackBy u listi komentara)
+trackByComment(index: number, c: Comment): string | number {
+  return c?.id ?? index;
+}
+
 
   submitComment() {
   if (!this.newComment.trim()) return;
@@ -76,5 +94,49 @@ export class BlogDetailsComponent implements OnInit{
       this.isSubmitting = false;
     }
   });
+}
+
+onEditComment(c: any) {
+  this.editingId = c.id;
+  this.editModel = c.content;     // init textarea
+  this.editError = null;
+}
+
+cancelEdit() {
+  this.editingId = null;
+  this.editModel = '';
+  this.editError = null;
+}
+
+async saveEdit(c: any) {
+  if (!this.editModel?.trim() || this.editModel === c.content) return;
+
+  this.editError = null;
+  this.savingEdit[c.id] = true;
+
+  try {
+    // ⬇⬇⬇ IZABERI JEDAN od ova dva poziva, u zavisnosti od backend rute ⬇⬇⬇
+
+    // VARIJANTA A: /blogs/:blogId/comments/:commentId
+    // const updated = await this.commentService
+    //   .updateCommentForBlog(this.data.blog.id, c.id, { content: this.editModel })
+    //   .toPromise();
+
+    // VARIJANTA B: /comments/:commentId
+    const updated = await this.blogService
+      .updateComment(c.id, { content: this.editModel })
+      .toPromise();
+
+    // Ažuriraj lokalno
+    c.content = updated?.content ?? this.editModel;
+    c.updatedAt = updated?.updatedAt ?? new Date().toISOString();
+
+    this.cancelEdit();
+  } catch (err: any) {
+    console.error(err);
+    this.editError = err?.error?.message || 'Updating the comment failed. Please try again.';
+  } finally {
+    this.savingEdit[c.id] = false;
+  }
 }
 }
