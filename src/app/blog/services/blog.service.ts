@@ -72,6 +72,12 @@ export class BlogService {
   }
 
   updateComment(commentId: string | number, body: { content: string }) {
-    return this.http.put<any>(`${this.apiUrl}/comments/${commentId}`, body);
-  }
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token ?? ''}`
+  });
+  return this.http.put<any>(`${this.apiUrl}/comments/${commentId}`, body, { headers });
+}
+
 }
