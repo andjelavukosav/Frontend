@@ -33,6 +33,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import './leaflet-config';
 import { CreateKeypointDialogComponent } from './tour/create-keypoint-dialog/create-keypoint-dialog.component';
 import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/key-point-details-dialog.component';
+import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/
     CreateTourComponent,
     DetailsTourComponent,
     CreateKeypointDialogComponent,
-    KeyPointDetailsDialogComponent
+    KeyPointDetailsDialogComponent,
+    PositionSimulatorComponent
   ],
   imports: [
     BrowserModule,
