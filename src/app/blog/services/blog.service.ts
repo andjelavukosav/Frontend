@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Blog } from '../models/blog.model';
 import { BlogDetailsRead } from '../models/blogDetailsRead.model';
+import { HttpParams } from '@angular/common/http';
+export interface ToggleLikeResponse { liked: boolean; total: number; }
+export interface HasUserLikedResponse { liked: boolean; }
+export interface CountLikesResponse { total: number; }
 @Injectable({
   providedIn: 'root'
 })
@@ -79,5 +83,47 @@ export class BlogService {
   });
   return this.http.put<any>(`${this.apiUrl}/comments/${commentId}`, body, { headers });
 }
+
+toggleLike(blogId: string, userId?: string): Observable<ToggleLikeResponse> {
+    const headers = this.authHeaders();
+    const body = userId ? { user_id: userId } : {}; // ako GW ubacuje userId iz JWT-a, može i prazno telo
+    return this.http.post<ToggleLikeResponse>(
+      `${this.apiUrl}/${blogId}/likes:toggle`,
+      body,
+      { headers }
+    );
+  }
+
+  /**
+   * Da li je korisnik lajkovao blog. Ako gateway sam čita user_id iz JWT-a,
+   * pozovi bez userId; inače prosledi userId (kao query param).
+   */
+  hasUserLiked(blogId: string, userId?: string): Observable<HasUserLikedResponse> {
+    const headers = this.authHeaders();
+    let params = new HttpParams();
+    if (userId) params = params.set('user_id', userId);
+    return this.http.get<HasUserLikedResponse>(
+      `${this.apiUrl}/${blogId}/likes/me`,
+      { headers, params }
+    );
+  }
+
+  /** Ukupan broj lajkova za blog. */
+  countLikes(blogId: string): Observable<CountLikesResponse> {
+    const headers = this.authHeaders();
+    return this.http.get<CountLikesResponse>(
+      `${this.apiUrl}/${blogId}/likes/count`,
+      { headers }
+    );
+  }
+
+  // ====== Helpers ======
+  private authHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') ?? '';
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
 }

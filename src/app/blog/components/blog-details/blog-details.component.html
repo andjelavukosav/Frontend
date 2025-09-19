@@ -31,6 +31,21 @@
             {{ data.blog.userId }}
           </span>
         </mat-card-subtitle>
+        <div class="header-actions">
+      <button
+        mat-icon-button
+        class="like-btn"
+        [disabled]="likeLoading"
+        [attr.aria-pressed]="liked"
+        (click)="onToggleLike()"
+        matTooltip="{{ liked ? 'Unlike' : 'Like' }}"
+        [matBadge]="likeCount"
+        matBadgeOverlap="false"
+        matBadgeSize="small"
+      >
+        <mat-icon>{{ liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+      </button>
+    </div>
       </mat-card-header>
 
       <mat-divider></mat-divider>

@@ -34,7 +34,8 @@ import './leaflet-config';
 import { CreateKeypointDialogComponent } from './tour/create-keypoint-dialog/create-keypoint-dialog.component';
 import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/key-point-details-dialog.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBadgeModule } from '@angular/material/badge';
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +79,9 @@ import { PositionSimulatorComponent } from './position-simulator/position-simula
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatBadgeModule
   ],
   providers: [
     {
