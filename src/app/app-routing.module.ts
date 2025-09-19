@@ -9,6 +9,7 @@ import { BlogDetailsComponent } from './blog/components/blog-details/blog-detail
 import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
 import { ProfileComponent } from './auth/profile/profile.component';
+import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
     { path: 'blogs/:id', component: BlogDetailsComponent },
     { path: 'create-tour', component: CreateTourComponent},
     { path: 'tours', component: DetailsTourComponent},
-    { path: 'profile', component: ProfileComponent}
+    { path: 'profile', component: ProfileComponent},
+    { path: 'position-simulator', component: PositionSimulatorComponent},
 ];
 
 @NgModule({

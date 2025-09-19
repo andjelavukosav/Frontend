@@ -1,210 +1,205 @@
-/* src/app/pages/blog-details/blog-details.component.css */
-.details-container {
-  min-height: 100vh;
-  padding: 2rem;
-  background: #fafafa;
-  display: flex;
-  justify-content: center;
+.page {
+  max-width: 920px;
+  margin: 24px auto;
+  padding: 48px 16px;
 }
 
-.details-card {
-  width: 100%;
-  max-width: 900px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 30px rgba(0,0,0,0.08);
-  padding: 1.5rem 2rem;
+.center {
+  display: grid;
+  place-items: center;
+  height: 40vh;
 }
 
-.details-header h1 { margin: 0 0 .25rem 0; }
+.error-card {
+  border-left: 4px solid #e53935;
+}
 
-.details-images {
-  display: flex;
+.blog-card,
+.comment-form-card,
+.comments-card {
+  margin-bottom: 16px;
+  border-radius: 16px;
+}
+
+.title {
+  font-size: 1.6rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.subtitle .meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.85;
+}
+.dot {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+.avatar,
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #3f51b5;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 1rem;
+  margin: 16px 0 8px;
 }
-.details-images img {
-  width: 180px;
-  height: 120px;
+.image-grid img {
+  width: 100%;
+  height: 160px;
   object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+/* Markdown stilizacija */
+.markdown {
+  margin-top: 8px;
+  line-height: 1.8;
+  font-size: 1.02rem;
+}
+.markdown h1, .markdown h2, .markdown h3 {
+  margin: 16px 0 8px;
+  font-weight: 700;
+}
+.markdown p {
+  margin: 0 0 12px;
+}
+.markdown pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 12px;
+  border-radius: 10px;
+  overflow: auto;
+}
+.markdown code {
+  background: #f4f6f8;
+  padding: 2px 6px;
   border-radius: 6px;
 }
 
-.comments-section {
-  margin-top: 2rem;
-  border-top: 1px solid #eee;
-  padding-top: 1rem;
-}
-.comment {
-  background: #fafafa;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: .75rem 1rem;
-  margin-bottom: .75rem;
-}
-.comment-meta {
+/* Forma za komentar */
+.comment-form {
   display: flex;
-  justify-content: space-between;
-  font-size: .85rem;
-  color: #666;
-  margin-bottom: .25rem;
+  flex-direction: column;
+  gap: 12px;
 }
-.comment-content { margin: 0; color: #333; }
-
-:host {
-  --card-bg: #ffffff;
-  --text: #1f2937;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-  --accent: #3b82f6;
-  --accent-contrast: #ffffff;
+.full-width {
+  width: 100%;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :host {
-    --card-bg: #0b1220;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --border: #1f2937;
-    --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    --accent: #60a5fa;
-  }
+/* Lista komentara */
+.comment-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,.06);
 }
-
-.add-comment {
-  margin-top: 2rem;
+.comment-item:last-child {
+  border-bottom: none;
 }
-
-.comment-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  padding: 1rem;
-  overflow: hidden;           /* ➜ DODATO */
-}
-
-
-.comment-card__header {
+.comment-body .comment-header {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-
-  h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .muted {
-    color: var(--muted);
-  }
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.author {
+  font-weight: 600;
+}
+.date {
+  opacity: 0.7;
+  font-size: 0.92rem;
+}
+.comment-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.empty {
+  padding: 8px 0 6px;
+  opacity: 0.75;
 }
 
-.comment-form textarea {
-  width: 100%;
-  max-width: 100%;            /* ➜ DODATO (sigurnosno) */
-  box-sizing: border-box;     /* ➜ DODATO */
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.85rem 1rem;
-  resize: vertical;
-  min-height: 110px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  display: block;             /* ➜ (opciono) osigurava layout */
-    resize: none;        /* onemogući ručno povećavanje */
-
+.page {
+  margin-top: 64px; /* prilagodi da ne seče sadržaj */
 }
 
-
-.comment-form textarea::placeholder {
-  color: var(--muted);
-}
-
-.comment-form textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-}
-
-.comment-form__meta {
+/* Raspored zaglavlja komentara: levo meta, desno dugme */
+.comment-header-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.6rem;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
-.counter {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-.spacer {
-  flex: 1;
-}
-
-.btn {
-  appearance: none;
-  border-radius: 9999px;
-  padding: 0.6rem 1rem;
-  border: 1px solid transparent;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.15s ease, filter 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+.comment-header {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 6px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.75);
 }
 
-.btn:hover { transform: translateY(-1px); }
-.btn:active { transform: translateY(0); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-.btn-primary {
-  background: var(--accent);
-  color: var(--accent-contrast);
-}
-.btn-primary:hover { filter: brightness(0.96); }
-
-.btn-ghost {
-  background: transparent;
-  border-color: var(--border);
-  color: var(--muted);
-}
-.btn-ghost:hover { border-color: var(--muted); color: var(--text); }
-
-.spinner {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  border-right-color: transparent;
-  animation: spin 0.7s linear infinite;
+/* Desna strana – akcije (Edit) */
+.comment-actions {
+  margin-left: auto;       /* gura dugme skroz desno */
+  display: inline-flex;
+  align-items: center;
 }
 
-.icon { font-size: 1.1rem; }
-
-.sr-only {
-  position: absolute !important;
-  height: 1px; width: 1px;
-  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap; border: 0; padding: 0; margin: -1px;
+/* Fino poravnanje ikon-dugmeta sa tekstom */
+.comment-actions .mat-mdc-icon-button {
+  width: 36px;
+  height: 36px;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-
-@media (max-width: 600px) {
-  .comment-form__meta {
-    gap: 0.5rem;
-  }
-  .btn { padding: 0.55rem 0.9rem; }
+/* Vizuelna konzistencija sa ostatkom kartice */
+.comment-content {
+  margin: 0;               /* već ima spacing iznad preko headera */
+  line-height: 1.5;
 }
+
+/* Ako želiš diskretnu podelu između komentara */
+.comment-item + .comment-item {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.blog-card .mat-card-header {
+  position: relative;
+}
+.blog-card .header-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.blog-card .like-btn[aria-pressed="true"] mat-icon {
+  /* nije obavezno, ali lepo izgleda kad je lajkovano */
+  color: #e53935; /* material red 600 */
+}
+
+

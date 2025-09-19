@@ -21,6 +21,12 @@
         Blogs
       </a>
 
+      <a *ngIf="user.role === 'tourist'" 
+        routerLink="/position-simulator" 
+        routerLinkActive="active-link">
+        Position Simulator
+      </a>
+
       <!-- Dodato: link za kreiranje ture samo za guide -->
       <a *ngIf="user.role === 'guide'" 
          routerLink="/create-tour" 

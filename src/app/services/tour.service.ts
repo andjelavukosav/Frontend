@@ -24,21 +24,28 @@ export class TourService {
         .pipe(
           map(response => response.tours) // odmah uzimamo samo niz
         );
-    }
-
-  /*addKeyPoint(tourId: string, point: KeyPoint) {
-    const body = {
-      tourId: tourId,
-      point: point
-    };
-    // Slanje zahteva na putanju koju gRPC-Gateway očekuje
-    return this.http.post<KeyPoint>(`${this.apiUrl}/add-keypoint`, body);
-  }*/
+  }
 
   addKeyPoint(formData: FormData): Observable<KeyPoint> {
     // Slanje FormData objekta, on već sadrži tourId i ostale podatke
     return this.http.post<KeyPoint>(`${this.apiUrl}/add-keypoint`, formData);
   }
 
+  updateKeyPoint(keyPoint: KeyPoint, tourId: string): Observable<KeyPoint> {
+    console.log('Tour id: ', tourId)
+    return this.http.put<KeyPoint>(`${this.apiUrl}/tour/${tourId}/update-keypoint`, keyPoint);
+  }
+
+  updateKeyPointMultipart(tourId: string, formData: FormData): Observable<KeyPoint> {
+    console.log('Tour id: ', tourId)
+    return this.http.put<KeyPoint>(`${this.apiUrl}/tour/${tourId}/update-keypoint`, formData);
+  }
+
+  deleteKeyPoint(tourId: string, keyPointId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/tour/${tourId}/keypoint/${keyPointId}`);  }
+
+  getTourById(tourId: string): Observable<Tour>{
+    return this.http.get<Tour>(`${this.apiUrl}/tour/${tourId}`);
+  }
 
 }

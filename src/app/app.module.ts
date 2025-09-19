@@ -16,9 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UserBlogsComponent } from './blog/components/user-blogs/user-blogs.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CreateBlogDialogComponent } from './blog/components/create-blog-dialog/create-blog-dialog.component';
 import { MarkdownModule } from 'ngx-markdown';
@@ -27,9 +24,19 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
 import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
 import { ProfileComponent } from './auth/profile/profile.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
-
-
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import './leaflet-config';
+import { CreateKeypointDialogComponent } from './tour/create-keypoint-dialog/create-keypoint-dialog.component';
+import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/key-point-details-dialog.component';
+import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBadgeModule } from '@angular/material/badge';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +51,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ConfirmDialogComponent,
     CreateTourComponent,
     DetailsTourComponent,
-    ProfileComponent
+    ProfileComponent,
+    CreateKeypointDialogComponent,
+    KeyPointDetailsDialogComponent,
+    PositionSimulatorComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +72,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatSnackBarModule,
     MarkdownModule.forRoot(),
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatBadgeModule
   ],
   providers: [
     {
