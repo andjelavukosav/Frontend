@@ -1,7 +1,7 @@
 .page {
   max-width: 920px;
   margin: 24px auto;
-  padding: 0 16px;
+  padding: 48px 16px;
 }
 
 .center {
@@ -185,4 +185,21 @@
   padding-top: 12px;
   margin-top: 12px;
 }
+
+.blog-card .mat-card-header {
+  position: relative;
+}
+.blog-card .header-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.blog-card .like-btn[aria-pressed="true"] mat-icon {
+  /* nije obavezno, ali lepo izgleda kad je lajkovano */
+  color: #e53935; /* material red 600 */
+}
+
 
