@@ -4,5 +4,11 @@ export interface User {
     email: string;
     role: string;
     isBlocked?: boolean;
+
+    firstName?: string;
+    lastName?: string;
+    profileImage?: string; 
+    biography?: string;
+    motto?: string; 
 }
   

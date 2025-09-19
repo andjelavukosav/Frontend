@@ -26,6 +26,9 @@ import { BlogDetailsComponent } from './blog/components/blog-details/blog-detail
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
+import { ProfileComponent } from './auth/profile/profile.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { DetailsTourComponent } from './tour/details-tour/details-tour.component
     BlogDetailsComponent,
     ConfirmDialogComponent,
     CreateTourComponent,
-    DetailsTourComponent
+    DetailsTourComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +62,7 @@ import { DetailsTourComponent } from './tour/details-tour/details-tour.component
     MatFormFieldModule,
     MatSnackBarModule,
     MarkdownModule.forRoot(),
+    MatProgressSpinnerModule
   ],
   providers: [
     {
