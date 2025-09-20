@@ -7,6 +7,8 @@ import { marked } from 'marked';
 import { Comment } from '../../models/comment.model';
 import { forkJoin } from 'rxjs';
 import type { ToggleLikeResponse } from '../../services/blog.service';
+import { jwtDecode } from 'jwt-decode';
+
 
 @Component({
   selector: 'app-blog-details',
@@ -44,7 +46,9 @@ export class BlogDetailsComponent implements OnInit{
 
   ngOnInit(): void {
     this.blogId = this.route.snapshot.paramMap.get('id')!;
+    //this.debugJwt();
     this.currentUserId = this.getUserIdFromToken(); // ili iz tvog AuthService-a
+    console.log(this.currentUserId);
 
     this.blogService.getBlogWithComments(this.blogId).subscribe({
       next: (res) => {
@@ -197,18 +201,42 @@ export class BlogDetailsComponent implements OnInit{
     }
   }
 
-  // ===== helpers =====
-  private getUserIdFromToken(): string | undefined {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return undefined;
-      const [, payloadBase64] = token.split('.');
-      const json = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
-      const payload = JSON.parse(json);
-      // prilagodi ključ onome što tvoj JWT sadrži (npr. 'sub' ili 'user_id')
-      return payload.user_id || payload.sub || undefined;
-    } catch {
-      return undefined;
-    }
+  public getUserIdFromToken(): string | undefined {
+  const token = localStorage.getItem('access-token')?.replace(/^Bearer\s+/, '');
+  if (!token) return undefined;
+
+  const payload = jwtDecode<Record<string, any>>(token);
+
+  return (
+    payload['user_id'] ??
+    payload['id'] ??
+    payload['sub'] ??
+    payload['nameid'] ??
+    payload['sid'] ??
+    payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ??
+    undefined
+  );
+}
+
+/*
+public debugJwt(): void {
+  const raw = localStorage.getItem('access-token');
+  if (!raw) { console.warn('Nema tokena u localStorage.'); return; }
+
+  const token = raw.trim().replace(/^Bearer\s+/, '');
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    console.warn('Token nije u JWT formatu (očekujem 3 dela). Vrednost:', token);
+    return;
   }
+
+  try {
+    const payload = jwtDecode<Record<string, any>>(token);
+    console.log('JWT payload =>', payload);
+    console.log('JWT keys =>', Object.keys(payload));
+  } catch (e) {
+   console.error('Ne mogu da dekodiram JWT:', e);
+  } 
+} */
+
 }
