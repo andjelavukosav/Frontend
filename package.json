@@ -25,6 +25,7 @@
     "@grpc/proto-loader": "^0.8.0",
     "codemirror": "^5.65.13",
     "google-protobuf": "^4.0.0",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "marked": "^4.3.0",
     "ngx-markdown": "^16.0.0",
