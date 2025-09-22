@@ -36,6 +36,8 @@ import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
+import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
+import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +54,9 @@ import { MatBadgeModule } from '@angular/material/badge';
     DetailsTourComponent,
     CreateKeypointDialogComponent,
     KeyPointDetailsDialogComponent,
-    PositionSimulatorComponent
+    PositionSimulatorComponent,
+    PublishTourComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,

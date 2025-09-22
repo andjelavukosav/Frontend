@@ -1,0 +1,26 @@
+<div class="publish-tour-container"> 
+  <h2>My Tours</h2>
+
+  <div *ngIf="tours.length === 0" class="no-tours">
+    You have no tours published yet.
+  </div>
+
+  <div class="tour-list">
+    <div *ngFor="let tour of tours" class="tour-card">
+      <h3>{{ tour.name }}</h3>
+      <p><strong>Price:</strong> {{ tour.price }} USD</p>
+      <p><strong>Description:</strong> {{ tour.description }}</p>
+      <p><strong>Length:</strong> {{ tour.length }} km</p>
+      <p><strong>Start time:</strong> {{ tour.startTime | date:'short' }}</p>
+
+      <div class="keypoint">
+        <h4>First Key Point</h4>
+        <p><strong>Name:</strong> {{ tour.keyPoints[0].name }}</p>
+        <p><strong>Description:</strong> {{ tour.keyPoints[0].description }}</p>
+        <img [src]="tour.keyPoints[0].imageURL" alt="Key Point image" width="150" />
+      </div>
+
+      <button class="add-cart-btn" (click)="addToCart(tour)">Add to Cart 🛒</button>
+    </div>
+  </div>
+</div>
