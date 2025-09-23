@@ -10,6 +10,9 @@ import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
 import { ProfileComponent } from './auth/profile/profile.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
+import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
+import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
 import { SingleTourComponent } from './tour/single-tour/single-tour.component';
 import { CreateReviewComponent } from './tour/create-review/create-review.component';
 
@@ -25,6 +28,9 @@ const routes: Routes = [
     { path: 'tours', component: DetailsTourComponent},
     { path: 'profile', component: ProfileComponent},
     { path: 'position-simulator', component: PositionSimulatorComponent},
+    { path: 'publish-tour', component: PublishTourComponent},
+    { path: 'shopping-cart', component:ShoppingCartComponent},
+    { path: 'purchased-tours', component: PurchasedToursComponent},
     { path: 'single-tour/:id', component: SingleTourComponent},
     { path: 'create-review', component: CreateReviewComponent}
 ];

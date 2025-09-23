@@ -37,6 +37,9 @@ import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
+import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
+import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
+import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
 import { SingleTourComponent } from './tour/single-tour/single-tour.component';
 import { CreateReviewComponent } from './tour/create-review/create-review.component';
 import { ReviewComponent } from './tour/review/review.component';
@@ -60,6 +63,9 @@ import { ReviewComponent } from './tour/review/review.component';
     CreateKeypointDialogComponent,
     KeyPointDetailsDialogComponent,
     PositionSimulatorComponent,
+    PublishTourComponent,
+    ShoppingCartComponent,
+    PurchasedToursComponent,
     SingleTourComponent,
     CreateReviewComponent,
     ReviewComponent,

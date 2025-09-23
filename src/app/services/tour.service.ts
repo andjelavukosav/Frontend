@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tour } from '../tour/model/create-tour.model';
+import { Tour, PublishTour } from '../tour/model/create-tour.model';
 import { map } from 'rxjs/operators';   // <-- ispravan import
 import { KeyPoint } from '../tour/model/keypoint.model';
 import { Review } from '../tour/model/review.model';
@@ -26,6 +26,21 @@ export class TourService {
           map(response => response.tours) // odmah uzimamo samo niz
         );
   }
+
+  getPublishTours(): Observable<PublishTour[]> {
+    return this.http.get<{ tours: PublishTour[] }>(`${this.apiUrl}/published`).pipe(
+      map(response => response.tours)
+    );
+  }
+
+ getPurchasedTours(userId: string): Observable<PublishTour[]> {
+    return this.http.get<PublishTour[]>(`${this.apiUrl}/purchased`, {
+      params: { userId: userId.toString() }
+    });
+  }
+
+
+
 
   addKeyPoint(formData: FormData): Observable<KeyPoint> {
     // Slanje FormData objekta, on već sadrži tourId i ostale podatke
