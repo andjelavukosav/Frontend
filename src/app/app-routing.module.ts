@@ -15,6 +15,7 @@ import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.compon
 import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
 import { SingleTourComponent } from './tour/single-tour/single-tour.component';
 import { CreateReviewComponent } from './tour/create-review/create-review.component';
+import { ActiveTourComponent } from './tour/active-tour/active-tour.component';
 
 
 const routes: Routes = [
@@ -32,7 +33,8 @@ const routes: Routes = [
     { path: 'shopping-cart', component:ShoppingCartComponent},
     { path: 'purchased-tours', component: PurchasedToursComponent},
     { path: 'single-tour/:id', component: SingleTourComponent},
-    { path: 'create-review', component: CreateReviewComponent}
+    { path: 'create-review', component: CreateReviewComponent},
+    { path: 'active-tour/:executionId', component: ActiveTourComponent}
 ];
 
 @NgModule({

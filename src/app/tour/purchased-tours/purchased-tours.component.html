@@ -6,18 +6,24 @@
   </div>
 
   <div class="tour-list">
-    <div *ngFor="let tour of tours" class="tour-card">
-      <h3>{{ tour.name }}</h3>
-      <p><strong>Price:</strong> {{ tour.price }} USD</p>
-      <p><strong>Description:</strong> {{ tour.description }}</p>
-      <p><strong>Length:</strong> {{ tour.length }} km</p>
-      <p><strong>Start time:</strong> {{ tour.startTime | date:'short' }}</p>
+  <div *ngFor="let tour of tours" class="tour-card">
+    <h3>{{ tour.name }}</h3>
+    <p><strong>Price:</strong> {{ tour.price }} USD</p>
+    <p><strong>Description:</strong> {{ tour.description }}</p>
+    <p><strong>Length:</strong> {{ tour.length }} km</p>
+    <p><strong>Start time:</strong> {{ tour.startTime | date:'short' }}</p>
 
-      <div class="keypoint" *ngIf="tour.keyPoints.length > 0">
-        <h3>Key Points</h3>
-        <!-- Mapa za sve keyPoints u turi -->
-        <div id="map-{{tour.id}}" class="map" style="height: 300px;"></div>
+    <div class="keypoint" *ngIf="tour.keyPoints.length > 0">
+      <h3>Key Points</h3>
+      <!-- Mapa za sve keyPoints u turi -->
+      <div id="map-{{tour.id}}" class="map" style="height: 300px;"></div>
     </div>
-    </div>
+
+    <!-- Dugme za pokretanje ture -->
+    <button (click)="startTour(tour)">
+      Start Tour
+    </button>
   </div>
+</div>
+
 </div>

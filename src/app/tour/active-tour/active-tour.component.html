@@ -1,0 +1,13 @@
+<div class="tour-card">
+  <h3>{{ tour.name }}</h3>
+  <p><strong>Description:</strong> {{ tour.description }}</p>
+  <p><strong>Length:</strong> {{ tour.length }} km</p>
+  <p><strong>Start time:</strong> {{ tour.startTime | date:'short' }}</p>
+
+  <div class="keypoint" *ngIf="tour.keyPoints.length > 0">
+    <h3>Key Points</h3>
+    <div id="map-{{tour.id}}" class="map" style="height: 300px;"></div>
+  </div>
+
+  <button (click)="leaveTour()">Leave Tour</button>
+</div>
