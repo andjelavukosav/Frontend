@@ -1,1 +1,57 @@
 <app-navbar></app-navbar>
+
+<div class="home-container">
+  
+  <div *ngIf="loading" class="loading">
+    Učitavanje tura...
+  </div>
+
+  <div *ngIf="!loading && tours.length === 0" class="no-tours">
+    Nema dostupnih tura.
+  </div>
+
+  <!-- OBVEZNO: trackBy za poboljšanje performansi -->
+  <div class="tours-grid" *ngIf="!loading && tours.length > 0">
+    <div class="tour-card" *ngFor="let tour of tours; trackBy: trackByTourId">
+      <!-- <div class="card-image">
+        <img [src]="tour.firstImage" [alt]="tour.name" 
+             onerror="this.src='assets/images/default-tour.jpg'">
+      </div>  -->
+      
+      <div class="card-content">
+        <h3 class="tour-title">{{ tour.name }}</h3>
+        
+        <div class="tour-meta">
+          <span class="tour-difficulty" [class]="'difficulty-' + tour.difficulty?.toLowerCase()">
+            {{ tour.difficultyText }}
+          </span>
+          <span class="tour-price">
+            {{ tour.price }} €
+          </span>
+        </div>
+        
+        <p class="tour-description">
+          {{ tour.truncatedDescription }}
+        </p>
+        
+        <div class="tour-tags" *ngIf="tour.tags && tour.tags.length > 0">
+          <span class="tag" *ngFor="let tag of tour.tags.slice(0, 3)">
+            {{ tag }}
+          </span>
+          <span class="tag-more" *ngIf="tour.tags.length > 3">
+            +{{ tour.tags.length - 3 }}
+          </span>
+        </div>
+        
+        <div class="tour-footer">
+          <span class="keypoints-count">
+            {{ tour.keyPoints?.length || 0 }} checkpoints
+          </span>
+          <button class="view-details-btn" [routerLink]="['/single-tour', tour.id]">
+            View details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

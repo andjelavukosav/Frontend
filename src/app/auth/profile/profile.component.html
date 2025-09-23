@@ -109,6 +109,11 @@
             <mat-icon>edit</mat-icon>
             Edit Profile
         </button>
+
+        <button mat-stroked-button color="primary" class="next-btn" (click)="goToHome()" *ngIf="!isEditing">
+            <mat-icon>arrow_forward</mat-icon>
+            Next
+        </button>
         
         <div *ngIf="isEditing" class="edit-mode-buttons">
             <button mat-stroked-button color="primary" class="save-btn" (click)="onSave()" [disabled]="profileForm.invalid">

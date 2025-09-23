@@ -8,13 +8,12 @@
       </a>
     </div>
 
-    <a *ngIf="isLoggedIn()" routerLink="/profile" class="nav-link">
-    <mat-icon>account_circle</mat-icon>
-    Moj Profil
-  </a>
-
     <!-- Navigacija za prijavljenog korisnika -->
     <div class="nav-links" *ngIf="authService.user$ | async as user">
+      <a *ngIf="user && user.username" routerLink="/profile" class="nav-link">
+        My account
+      </a>
+
       <a *ngIf="user.role === 'tourist' || user.role === 'guide'" 
          routerLink="/blogs" 
          routerLinkActive="active-link">

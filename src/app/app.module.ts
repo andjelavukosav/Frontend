@@ -37,6 +37,11 @@ import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
+import { SingleTourComponent } from './tour/single-tour/single-tour.component';
+import { CreateReviewComponent } from './tour/create-review/create-review.component';
+import { ReviewComponent } from './tour/review/review.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +59,10 @@ import { MatBadgeModule } from '@angular/material/badge';
     ProfileComponent,
     CreateKeypointDialogComponent,
     KeyPointDetailsDialogComponent,
-    PositionSimulatorComponent
+    PositionSimulatorComponent,
+    SingleTourComponent,
+    CreateReviewComponent,
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,

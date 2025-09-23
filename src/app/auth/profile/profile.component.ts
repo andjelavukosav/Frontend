@@ -178,4 +178,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   return `https://ui-avatars.com/api/?name=${name}&size=200&background=random&color=fff&bold=true`;
 }
 
+  goToHome(): void {
+      this.router.navigate(['/']); 
+  }
 }
