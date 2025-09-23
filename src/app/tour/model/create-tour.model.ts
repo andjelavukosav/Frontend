@@ -30,3 +30,13 @@ export interface CreateTourRequest {
   tags: string[];
   authorId: string;
 }
+
+export interface PublishTour {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  length: number; // dužina u km npr.
+  startTime: string; // vreme polaska
+  keyPoints: KeyPoint[]; // lista ključnih tačaka
+}

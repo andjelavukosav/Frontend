@@ -1,0 +1,262 @@
+.profile-edit-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    font-size: 1.8rem;
+}
+
+/* Profile header */
+.profile-header {
+    display: flex;
+    align-items: center; 
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-image-section {
+    position: relative; 
+    flex-shrink: 0; 
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f0f0f0;
+    display: block;
+}
+
+.edit-image-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #1976d2;
+    color: white;
+    z-index: 10;
+}
+
+.edit-image-btn:hover {
+    background-color: #1565c0;
+}
+
+.user-info-section {
+    flex-grow: 1;
+    padding-left: 2rem;
+    display: flex;
+    justify-content: flex-end; 
+}
+
+.user-info-content {
+    text-align: left; 
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.user-name {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.user-details {
+    line-height: 1.4;
+}
+
+.username {
+    color: #666;
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.user-role {
+    color: #1976d2;
+    margin: 0;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 1.5rem 0;
+}
+
+/* Profile details */
+.profile-details {
+    margin-bottom: 2rem;
+}
+
+.detail-section {
+    margin-bottom: 1.5rem;
+}
+
+.detail-section:last-child {
+    margin-bottom: 0;
+}
+
+.detail-label {
+    margin: 0 0 0.5rem 0;
+    color: #666;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    margin: 0;
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.email {
+    color: #1976d2;
+    font-weight: 500;
+}
+
+.motto {
+    font-style: italic;
+    color: #555;
+}
+
+.bio {
+    line-height: 1.6;
+    color: #444;
+}
+
+/* Name sections in a row */
+.name-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* Full width fields in edit mode */
+.full-width-field {
+    width: 100%;
+}
+
+.bio-field .mat-form-field-flex {
+    align-items: flex-start;
+}
+
+.bio-field textarea {
+    min-height: 100px;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.edit-mode-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.edit-btn, .save-btn, .cancel-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    min-width: 140px;
+}
+
+.edit-btn {
+    border-color: #1976d2;
+    color: #1976d2;
+}
+
+.save-btn {
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.cancel-btn {
+    border-color: #f44336;
+    color: #f44336;
+}
+
+.save-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    color: #666;
+}
+
+.loading p {
+    margin-top: 1rem;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    stroke-width: 1.5px;
+}
+
+.detail-label {
+    margin-bottom: 8px;   
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.detail-section p.detail-value {
+    margin: 0;           
+}
+
+@media (max-width: 768px) {
+    .profile-edit-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .user-info-section {
+        padding-left: 0;
+        justify-content: center;
+    }
+
+    .name-sections {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .action-buttons, .edit-mode-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .edit-btn, .save-btn, .cancel-btn {
+        width: 100%;
+        max-width: 250px;
+    }
+}

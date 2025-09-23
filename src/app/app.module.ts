@@ -16,9 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UserBlogsComponent } from './blog/components/user-blogs/user-blogs.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CreateBlogDialogComponent } from './blog/components/create-blog-dialog/create-blog-dialog.component';
 import { MarkdownModule } from 'ngx-markdown';
@@ -26,10 +23,27 @@ import { BlogDetailsComponent } from './blog/components/blog-details/blog-detail
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
+import { ProfileComponent } from './auth/profile/profile.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import './leaflet-config';
 import { CreateKeypointDialogComponent } from './tour/create-keypoint-dialog/create-keypoint-dialog.component';
 import { KeyPointDetailsDialogComponent } from './tour/key-point-details-dialog/key-point-details-dialog.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatBadgeModule } from '@angular/material/badge';
+import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
+import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
+import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
+import { SingleTourComponent } from './tour/single-tour/single-tour.component';
+import { CreateReviewComponent } from './tour/create-review/create-review.component';
+import { ReviewComponent } from './tour/review/review.component';
+
 
 @NgModule({
   declarations: [
@@ -45,9 +59,16 @@ import { PositionSimulatorComponent } from './position-simulator/position-simula
     ConfirmDialogComponent,
     CreateTourComponent,
     DetailsTourComponent,
+    ProfileComponent,
     CreateKeypointDialogComponent,
     KeyPointDetailsDialogComponent,
-    PositionSimulatorComponent
+    PositionSimulatorComponent,
+    PublishTourComponent,
+    ShoppingCartComponent,
+    PurchasedToursComponent,
+    SingleTourComponent,
+    CreateReviewComponent,
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +86,19 @@ import { PositionSimulatorComponent } from './position-simulator/position-simula
     MatFormFieldModule,
     MatSnackBarModule,
     MarkdownModule.forRoot(),
+    MatProgressSpinnerModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatBadgeModule
   ],
   providers: [
     {

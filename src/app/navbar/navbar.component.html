@@ -10,30 +10,41 @@
 
     <!-- Navigacija za prijavljenog korisnika -->
     <div class="nav-links" *ngIf="authService.user$ | async as user">
+      <a *ngIf="user && user.username" routerLink="/profile" class="nav-link">
+        My account
+      </a>
+
       <a *ngIf="user.role === 'tourist' || user.role === 'guide'" 
          routerLink="/blogs" 
          routerLinkActive="active-link">
         Blogs
       </a>
 
-      <a *ngIf="user.role === 'tourist'" 
-        routerLink="/position-simulator" 
-        routerLinkActive="active-link">
-        Position Simulator
-      </a>
+      <!-- Linkovi samo za turiste -->
+      <ng-container *ngIf="user.role === 'tourist'">
+        <a routerLink="/position-simulator" routerLinkActive="active-link">
+          Position Simulator
+        </a>
+        <a routerLink="/publish-tour" routerLinkActive="active-link">
+          Publish Tour
+        </a>
+        <a routerLink="/shopping-cart" routerLinkActive="active-link">
+          Cart
+        </a>
+        <a routerLink="/purchased-tours" routerLinkActive="active-link">
+          Purchased Tours
+        </a>
+      </ng-container>
 
-      <!-- Dodato: link za kreiranje ture samo za guide -->
-      <a *ngIf="user.role === 'guide'" 
-         routerLink="/create-tour" 
-         routerLinkActive="active-link">
-        Create Tour
-      </a>
-
-      <a *ngIf="user.role === 'guide'" 
-         routerLink="/tours" 
-         routerLinkActive="active-link">
-         Tours
-      </a>
+      <!-- Linkovi samo za vodiče -->
+      <ng-container *ngIf="user.role === 'guide'">
+        <a routerLink="/create-tour" routerLinkActive="active-link">
+          Create Tour
+        </a>
+        <a routerLink="/tours" routerLinkActive="active-link">
+          Tours
+        </a>
+      </ng-container>
     </div>
     
     <!-- Auth Buttons -->

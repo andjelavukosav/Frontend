@@ -1,140 +1,205 @@
-.blog-details-container {
-  min-height: 100vh;
-  padding: 4rem 2rem;
-  background: #ffffff;
-  display: flex;
-  justify-content: center;
+.page {
+  max-width: 920px;
+  margin: 24px auto;
+  padding: 48px 16px;
 }
 
-.blog-details-card {
-  width: 100%;
-  max-width: 800px;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 6px 30px rgba(0,0,0,0.08);
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.center {
+  display: grid;
+  place-items: center;
+  height: 40vh;
 }
 
-.blog-details-header {
-  display: flex;
-  justify-content: space-between;
+.error-card {
+  border-left: 4px solid #e53935;
+}
+
+.blog-card,
+.comment-form-card,
+.comments-card {
+  margin-bottom: 16px;
+  border-radius: 16px;
+}
+
+.title {
+  font-size: 1.6rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.subtitle .meta {
+  display: inline-flex;
   align-items: center;
+  gap: 6px;
+  opacity: 0.85;
+}
+.dot {
+  margin: 0 8px;
+  opacity: 0.5;
 }
 
-.blog-details-header h1 {
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2d3748;
+.avatar,
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #3f51b5;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-.blog-description {
-  font-size: 1.1rem;
-  color: #4a5568;
-}
-
-.blog-images {
-  display: flex;
-  flex-wrap: wrap;
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
+  margin: 16px 0 8px;
 }
-
-.blog-image {
-  width: 180px;
-  border-radius: 8px;
+.image-grid img {
+  width: 100%;
+  height: 160px;
   object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
 }
 
-/* Komentari */
-.comments-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* Markdown stilizacija */
+.markdown {
+  margin-top: 8px;
+  line-height: 1.8;
+  font-size: 1.02rem;
 }
-
-.comment-card {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 1rem;
+.markdown h1, .markdown h2, .markdown h3 {
+  margin: 16px 0 8px;
+  font-weight: 700;
 }
-
-.comment-header {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 0.5rem;
+.markdown p {
+  margin: 0 0 12px;
 }
-
-.comment-body {
-  font-size: 1rem;
-  color: #333;
+.markdown pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 12px;
+  border-radius: 10px;
+  overflow: auto;
 }
-
-.no-comments {
-  font-size: 0.95rem;
-  color: #888;
-  font-style: italic;
+.markdown code {
+  background: #f4f6f8;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
 /* Forma za komentar */
-.add-comment .comment-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  background: #fff;
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-
-.comment-form textarea {
+.full-width {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-family: inherit;
-  resize: vertical;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.comment-form__meta {
+/* Lista komentara */
+.comment-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.comment-item:last-child {
+  border-bottom: none;
+}
+.comment-body .comment-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.author {
+  font-weight: 600;
+}
+.date {
+  opacity: 0.7;
+  font-size: 0.92rem;
+}
+.comment-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.empty {
+  padding: 8px 0 6px;
+  opacity: 0.75;
+}
+
+.page {
+  margin-top: 64px; /* prilagodi da ne seče sadržaj */
+}
+
+/* Raspored zaglavlja komentara: levo meta, desno dugme */
+.comment-header-row {
   display: flex;
   align-items: center;
-  margin-top: 0.8rem;
-  gap: 0.5rem;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
-.counter {
-  font-size: 0.85rem;
-  color: #666;
+.comment-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.75);
 }
 
-.spacer {
-  flex: 1;
+/* Desna strana – akcije (Edit) */
+.comment-actions {
+  margin-left: auto;       /* gura dugme skroz desno */
+  display: inline-flex;
+  align-items: center;
 }
 
-.btn {
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
+/* Fino poravnanje ikon-dugmeta sa tekstom */
+.comment-actions .mat-mdc-icon-button {
+  width: 36px;
+  height: 36px;
 }
 
-.btn-primary {
-  background: #3182ce;
-  color: #fff;
-  border: none;
+/* Vizuelna konzistencija sa ostatkom kartice */
+.comment-content {
+  margin: 0;               /* već ima spacing iznad preko headera */
+  line-height: 1.5;
 }
 
-.btn-primary:hover {
-  background: #2b6cb0;
+/* Ako želiš diskretnu podelu između komentara */
+.comment-item + .comment-item {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding-top: 12px;
+  margin-top: 12px;
 }
 
-.btn-ghost {
-  background: transparent;
-  border: 1px solid #ccc;
-  color: #444;
+.blog-card .mat-card-header {
+  position: relative;
+}
+.blog-card .header-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.blog-card .like-btn[aria-pressed="true"] mat-icon {
+  /* nije obavezno, ali lepo izgleda kad je lajkovano */
+  color: #e53935; /* material red 600 */
 }
 
-.btn-ghost:hover {
-  background: #f0f0f0;
-}
+

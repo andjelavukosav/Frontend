@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Blog } from '../models/blog.model';
 import { BlogDetailsRead } from '../models/blogDetailsRead.model';
+import { HttpParams } from '@angular/common/http';
+export interface ToggleLikeResponse { liked: boolean; total: number; }
+export interface HasUserLikedResponse { liked: boolean; }
+export interface CountLikesResponse { total: number; }
 @Injectable({
   providedIn: 'root'
 })
@@ -70,4 +74,53 @@ export class BlogService {
     });
     return this.http.post(`${this.apiUrl}/${blogId}/comments`, { content }, { headers });
   }
+
+  updateComment(commentId: string | number, body: { content: string }) {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token ?? ''}`
+  });
+  return this.http.put<any>(`${this.apiUrl}/comments/${commentId}`, body, { headers });
+}
+
+toggleLike(blogId: string, userId?: string): Observable<ToggleLikeResponse> {
+    const headers = this.authHeaders();
+    //console.log(userId)
+    const body = userId ? { userId } : {};
+    return this.http.post<ToggleLikeResponse>(
+      `${this.apiUrl}/${blogId}/likes:toggle`,
+      body,
+      { headers }
+    );
+  }
+
+  hasUserLiked(blogId: string, userId?: string): Observable<HasUserLikedResponse> {
+    const headers = this.authHeaders();
+    let params = new HttpParams();
+    if (userId) params = params.set('userId', userId);
+    return this.http.get<HasUserLikedResponse>(
+      `${this.apiUrl}/${blogId}/likes/me`,
+      { headers, params }
+    );
+  }
+
+  /** Ukupan broj lajkova za blog. */
+  countLikes(blogId: string): Observable<CountLikesResponse> {
+    const headers = this.authHeaders();
+    return this.http.get<CountLikesResponse>(
+      `${this.apiUrl}/${blogId}/likes/count`,
+      { headers }
+    );
+  }
+
+  // ====== Helpers ======
+  private authHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token') ?? '';
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
 }

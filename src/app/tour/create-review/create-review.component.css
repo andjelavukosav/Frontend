@@ -1,0 +1,193 @@
+.review-dialog {
+  min-width: 500px;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.dialog-title {
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 16px 0;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 36px;
+  color: #ddd;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  position: relative;
+}
+
+.star-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Hover efekat - sve zvezdice do hoverovane će biti žute */
+.rating-stars:hover .star-btn {
+  color: #ffd700;
+}
+
+/* Resetujemo boju za zvezdice nakon hoverovane */
+.rating-stars .star-btn:hover ~ .star-btn {
+  color: #ddd;
+}
+
+.star-btn.active {
+  color: #ffd700;
+  transform: scale(1.1);
+}
+
+/* Glatka tranzicija za hover efekat */
+.star-btn {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.image-upload {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.add-image-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+}
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.image-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+
+.image-item:hover {
+  transform: scale(1.05);
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255,255,255,0.95);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.remove-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.dialog-actions {
+  padding: 20px 0 0 0;
+  margin-top: 25px;
+  border-top: 2px solid #f0f0f0;
+  gap: 12px;
+}
+
+.cancel-btn {
+  padding: 8px 20px;
+  font-weight: 500;
+}
+
+.submit-btn {
+  padding: 8px 24px;
+  font-weight: 600;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .review-dialog {
+    min-width: unset;
+    max-width: 95vw;
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .rating-stars {
+    gap: 8px;
+  }
+  
+  .star-btn {
+    font-size: 28px;
+    padding: 6px;
+  }
+  
+  .image-item {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Animation for stars */
+@keyframes star-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.star-btn.active {
+  animation: star-pulse 0.3s ease;
+}

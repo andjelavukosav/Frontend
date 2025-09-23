@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateTourRequest, Tour } from '../tour/model/create-tour.model';
+import { CreateTourRequest } from '../tour/model/create-tour.model';
+import { Tour, PublishTour } from '../tour/model/create-tour.model';
 import { map } from 'rxjs/operators';   // <-- ispravan import
 import { KeyPoint } from '../tour/model/keypoint.model';
 import { TourStatus } from '../tour/model/enum/tour-status.enum';
+import { Review } from '../tour/model/review.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,6 @@ export class TourService {
   constructor(private http: HttpClient) {}
 
   createTour(tourRequest: CreateTourRequest): Observable<Tour> {
-    // Dodaj "create-tour" na kraj apiUrl
     return this.http.post<Tour>(`${this.apiUrl}/create-tour`, tourRequest);
   }
 
@@ -23,16 +24,30 @@ export class TourService {
   getAuthorTours(userId: string): Observable<Tour[]> {
       return this.http.get<{ tours: Tour[] }>(`${this.apiUrl}/${userId}`)
         .pipe(
-          map(response => response.tours) // odmah uzimamo samo niz
+          map(response => response.tours) 
         );
   }
+
+  getPublishTours(): Observable<PublishTour[]> {
+    return this.http.get<{ tours: PublishTour[] }>(`${this.apiUrl}/published`).pipe(
+      map(response => response.tours)
+    );
+  }
+
+ getPurchasedTours(userId: string): Observable<PublishTour[]> {
+    return this.http.get<PublishTour[]>(`${this.apiUrl}/purchased`, {
+      params: { userId: userId.toString() }
+    });
+  }
+
+
+
 
   updateTourStatus(tourId: string, status: TourStatus): Observable<UpdateTourStatusResponse>{
     return this.http.patch<UpdateTourStatusResponse>(`${this.apiUrl}/${tourId}/update-status`, { newStatus: status});
   }
 
   addKeyPoint(formData: FormData): Observable<KeyPoint> {
-    // Slanje FormData objekta, on već sadrži tourId i ostale podatke
     return this.http.post<KeyPoint>(`${this.apiUrl}/add-keypoint`, formData);
   }
 
@@ -51,6 +66,42 @@ export class TourService {
 
   getTourById(tourId: string): Observable<Tour>{
     return this.http.get<Tour>(`${this.apiUrl}/tour/${tourId}`);
+  }
+
+  getAllTours(): Observable<Tour[]> {
+    return this.http.get<{ tours: Tour[] }>(`${this.apiUrl}/all`).pipe(
+      map(response => response.tours) // Ekstraktujte niz iz odgovora
+    );
+  }
+
+
+
+  getReview(id: string): Observable<Review> {
+    return this.http.get<Review>(`${this.apiUrl}/reviews/${id}`);
+  }
+
+  getReviewsByTour(tourId: string): Observable<Review[]> {
+    return this.http.get<Review[]>(`${this.apiUrl}/${tourId}/reviews`);
+  }
+
+  getReviewsByTourist(touristId: string): Observable<Review[]> {
+    return this.http.get<Review[]>(`${this.apiUrl}/tourist/${touristId}/reviews`);
+  }
+
+  updateReview(id: string, review: Partial<Review>): Observable<Review> {
+    return this.http.put<Review>(`${this.apiUrl}/reviews/${id}`, review);
+  }
+
+  deleteReview(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/reviews/${id}`);
+  }
+
+  getAverageRating(tourId: string): Observable<{ average: number }> {
+    return this.http.get<{ average: number }>(`${this.apiUrl}/${tourId}/average-rating`);
+  }
+
+  createReview(formData: FormData): Observable<Review> {
+    return this.http.post<Review>(`${this.apiUrl}/reviews`, formData);
   }
 
 }
