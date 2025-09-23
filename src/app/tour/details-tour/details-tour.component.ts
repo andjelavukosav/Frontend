@@ -8,6 +8,10 @@ import { KeyPoint, KeyPointDialogData } from '../model/keypoint.model';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateKeypointDialogComponent } from '../create-keypoint-dialog/create-keypoint-dialog.component';
 import { KeyPointDetailsDialogComponent } from '../key-point-details-dialog/key-point-details-dialog.component';
+import { ActivatedRoute } from '@angular/router';
+import { TourStatus } from '../model/enum/tour-status.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { error } from 'console';
 
 @Component({
   selector: 'app-details-tour',
@@ -24,10 +28,14 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
   activeTourForForm: Tour | null = null;
   private formMap: L.Map | null = null;
 
+  highlightedTourId: string | null = null;
+
   constructor(
     private tourService: TourService, 
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -35,13 +43,29 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
       this.user = user;
       this.loadTours();
     });
+
+    //Subcribe na query params ako treba da se istakne novokreirana tura
+    this.route.queryParams.subscribe(params => {
+      this.highlightedTourId = params['highlight'] || null;
+
+      if(this.highlightedTourId) {
+        // Timeout da se saceka render tura prije scroll-a
+        setTimeout(() => {
+          const element = document.getElementById(this.highlightedTourId!);
+          if(element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center'});
+            element.classList.add('highlighted');
+          }
+        }, 100);
+      }
+    })
   }
 
   private initTourMap(tour: Tour) {
     if (this.pointMaps[tour.id!]) return; //vec postoji
     
     const mapId = `map-tour-${tour.id}`;
-    const map = L.map(mapId).setView([44.787197, 20.457273], 12); // default Beograd
+    const map = L.map(mapId).setView([45.267136, 19.833549], 12); // Novi Sad
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
@@ -173,7 +197,7 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
       const updatedKeyPoint: KeyPoint = result;
       console.log('Updated key point: ', updatedKeyPoint);
 
-      if(updatedKeyPoint.order !== keyPoint.order) {
+      if(updatedKeyPoint.order !== keyPoint.order || updatedKeyPoint.latitude !== keyPoint.latitude || updatedKeyPoint.longitude !== keyPoint.longitude) {
         this.reloadTour(tour.id!);
         return;
       }
@@ -229,6 +253,87 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
     sortedPoints.forEach(kp => this.addMarkerForKeyPoint(kp, map, tour));
     this.drawTourLine(tour, map);
   }
+
+
+  canPublish(tour: Tour): boolean {
+    return !!tour.name &&
+          !!tour.description &&
+          !!tour.difficulty &&
+          tour.tags.length > 0 &&
+          tour.keyPoints.length >= 2 &&
+          tour.durations !== undefined &&
+          tour.durations.length > 0;
+  }
+
+  publishTour(tour: Tour) {
+    if (this.canPublish(tour)) {
+
+      this.tourService.updateTourStatus(tour.id!, TourStatus.PUBLISHED).subscribe({
+        next: (response: UpdateTourStatusResponse) => {
+
+          tour.status = TourStatus.PUBLISHED
+          if (response.updatedAt) {
+            const ts = response.updatedAt as any; // gRPC Timestamp
+            tour.publishedAt = new Date(ts.seconds * 1000 + ts.nanos / 1e6);
+          }
+          this.snackBar.open('Tour successfully published!', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success']
+          });
+        }, 
+        error: (err) => {
+          console.error(err);
+          this.snackBar.open('Failed to publish tour.', 'Close', {
+            duration: 4000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error']
+          });
+        }
+      });
+      
+    } else {
+      this.snackBar.open('Tour cannot be published. Check required fields, key points, and durations.', 'Close', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-error']
+      });
+    }
+  }
+
+  archiveTour(tour: Tour) {
+    this.tourService.updateTourStatus(tour.id!, TourStatus.ARCHIVED).subscribe({
+      next: (response: UpdateTourStatusResponse) => {
+        tour.status = TourStatus.ARCHIVED;
+
+        if (response.updatedAt) {
+          const ts = response.updatedAt as any; // gRPC Timestamp
+          tour.archivedAt = new Date(ts.seconds * 1000 + ts.nanos / 1e6);
+        }
+
+        this.snackBar.open('Tour successfully archived!', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success']
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackBar.open('Failed to archive tour.', 'Close', {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
+  }
+
+
 
 
 }

@@ -1,0 +1,6 @@
+export enum TransportType {
+  TRANSPORT_TYPE_UNSPECIFIED = "TRANSPORT_TYPE_UNSPECIFIED",
+  WALKING = "WALKING",
+  BIKE = "BIKE",
+  CAR = "CAR",
+}

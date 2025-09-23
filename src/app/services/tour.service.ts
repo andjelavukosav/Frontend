@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tour } from '../tour/model/create-tour.model';
+import { CreateTourRequest, Tour } from '../tour/model/create-tour.model';
 import { map } from 'rxjs/operators';   // <-- ispravan import
 import { KeyPoint } from '../tour/model/keypoint.model';
+import { TourStatus } from '../tour/model/enum/tour-status.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourService {
-  private apiUrl = 'http://localhost:8080/tours'; // prilagodi svom backendu
+  private apiUrl = 'http://localhost:8080/tours'; 
 
   constructor(private http: HttpClient) {}
 
-  createTour(tour: Tour): Observable<Tour> {
+  createTour(tourRequest: CreateTourRequest): Observable<Tour> {
     // Dodaj "create-tour" na kraj apiUrl
-    return this.http.post<Tour>(`${this.apiUrl}/create-tour`, tour);
+    return this.http.post<Tour>(`${this.apiUrl}/create-tour`, tourRequest);
   }
 
 
@@ -24,6 +25,10 @@ export class TourService {
         .pipe(
           map(response => response.tours) // odmah uzimamo samo niz
         );
+  }
+
+  updateTourStatus(tourId: string, status: TourStatus): Observable<UpdateTourStatusResponse>{
+    return this.http.patch<UpdateTourStatusResponse>(`${this.apiUrl}/${tourId}/update-status`, { newStatus: status});
   }
 
   addKeyPoint(formData: FormData): Observable<KeyPoint> {

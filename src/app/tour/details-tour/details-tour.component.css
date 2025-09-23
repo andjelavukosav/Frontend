@@ -182,6 +182,17 @@
   gap: 0.5rem;
 }
 
+.distance-info {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #e9ecef;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  min-width: 70px;
+  text-align: center;
+}
+
 .tag {
   background-color: #e9ecef;
   color: #495057;
@@ -202,6 +213,13 @@
   margin-top: 10px;
   border: 1px solid #ccc;
 }
+
+.highlighted {
+  border: 2px solid #004D3B;
+  background-color: #f0fff0;
+  transition: background-color 1s ease;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -455,6 +473,139 @@
   pointer-events: none;
   z-index: 1;
 }
+
+.durations-section {
+  padding: 1rem 2rem;
+}
+
+.durations-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.duration-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 70px;
+  background-color: #e9ecef;
+  color: #495057;
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.duration-badge:hover {
+  transform: translateY(-2px);
+  background-color: #dee2e6;
+}
+
+.duration-badge.walking {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.duration-badge.bike {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.duration-badge.car {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.duration-badge .mode {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.duration-badge .time {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.tour-actions {
+  padding: 1rem 2rem 2rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.publish-btn {
+  background-color: #007bff; /* plava */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.publish-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+
+.snackbar-success {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+.snackbar-error {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.published-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.published-info {
+  align-self: flex-start;
+  color: #888;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.archive-btn {
+  align-self: flex-end; /* dugme desno */
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+.archive-btn:hover {
+  background-color: #545b62;
+  transform: translateY(-1px);
+}
+
+
+.archived-info {
+  display: inline-block;
+  color: #888;        /* siva */
+  font-size: 13px;
+  font-style: italic; /* opciono, da izgleda kao meta-informacija */
+}
+
+
+
 
 /* Responsive */
 @media (max-width: 768px) {

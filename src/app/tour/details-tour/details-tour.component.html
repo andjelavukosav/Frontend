@@ -4,7 +4,33 @@
   </div>
 
   <div class="tours-grid">
-    <div *ngFor="let tour of tours" class="tour-card">
+    <div *ngFor="let tour of tours" [id]="tour.id" class="tour-card">
+
+      <div class="tour-actions">
+        <button 
+          *ngIf="!tour.publishedAt"
+          class="publish-btn" 
+          (click)="publishTour(tour)">
+          Publish
+        </button>
+
+       <!-- Published: info + dugme za arhiviranje -->
+        <div *ngIf="tour.status === 'PUBLISHED'" class="published-info">
+          <span>Published: {{ tour.publishedAt | date:'dd.MM.yyyy HH:mm' }}</span>
+          <button 
+            class="archive-btn"
+            (click)="archiveTour(tour)">
+            Archive
+          </button>
+        </div>
+
+         <!-- Archived: samo info o publish + archive -->
+        <div *ngIf="tour.status === 'ARCHIVED'" class="archived-info">
+          <div>Published: {{ tour.publishedAt | date:'dd.MM.yyyy HH:mm' }}</div>
+          <div>Archived: {{ tour.archivedAt | date:'dd.MM.yyyy HH:mm' }}</div>
+        </div>
+        
+      </div>
 
       <div class="card-header">
         <div class="status-badge" [ngClass]="tour.status">
@@ -34,6 +60,20 @@
           <span *ngFor="let tag of tour.tags" class="tag">{{ tag }}</span>
         </div>
       </div>
+
+      <div class="distance-info" *ngIf="tour.distance !== null && tour.distance !== undefined">
+        <span>{{ tour.distance | number:'1.1-2' }} km</span>
+      </div>
+
+      <div class="durations-section" *ngIf="tour.durations?.length">
+      <span class="field-label">Estimated Duration</span>
+      <div class="durations-grid">
+        <div *ngFor="let duration of tour.durations" class="duration-badge" [ngClass]="duration.mode.toLowerCase()">
+          <span class="mode">{{ duration.mode | titlecase }}</span>
+          <span class="time">{{ duration.minutes }} min</span>
+        </div>
+      </div>
+    </div>
 
       <!-- Glavna mapa ture -->
       <div class="key-points-section">
