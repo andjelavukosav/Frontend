@@ -16,4 +16,12 @@ export class NavbarComponent {
     this.authService.user$.next({username: "", id: '', email: "", role: "" });
     console.log('User: ', this.authService.user$.value)
   }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  getCurrentUsername(): string {
+    return this.authService.user$.getValue().username;
+  }
 }

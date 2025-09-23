@@ -29,8 +29,7 @@ export class RegistrationComponent {
         console.log(res);
         // Show success alert
         alert('You have successfully registered!');
-        // Preusmeri na login stranicu
-        this.router.navigate(['/login']); // <-- ovde ide ruta do login strane
+        this.router.navigate(['/profile']);
       },
       error: (err) => {
         console.error(err);

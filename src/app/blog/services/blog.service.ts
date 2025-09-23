@@ -86,7 +86,8 @@ export class BlogService {
 
 toggleLike(blogId: string, userId?: string): Observable<ToggleLikeResponse> {
     const headers = this.authHeaders();
-    const body = userId ? { user_id: userId } : {}; // ako GW ubacuje userId iz JWT-a, može i prazno telo
+    //console.log(userId)
+    const body = userId ? { userId } : {};
     return this.http.post<ToggleLikeResponse>(
       `${this.apiUrl}/${blogId}/likes:toggle`,
       body,
@@ -94,14 +95,10 @@ toggleLike(blogId: string, userId?: string): Observable<ToggleLikeResponse> {
     );
   }
 
-  /**
-   * Da li je korisnik lajkovao blog. Ako gateway sam čita user_id iz JWT-a,
-   * pozovi bez userId; inače prosledi userId (kao query param).
-   */
   hasUserLiked(blogId: string, userId?: string): Observable<HasUserLikedResponse> {
     const headers = this.authHeaders();
     let params = new HttpParams();
-    if (userId) params = params.set('user_id', userId);
+    if (userId) params = params.set('userId', userId);
     return this.http.get<HasUserLikedResponse>(
       `${this.apiUrl}/${blogId}/likes/me`,
       { headers, params }

@@ -23,6 +23,7 @@ import { BlogDetailsComponent } from './blog/components/blog-details/blog-detail
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
+import { ProfileComponent } from './auth/profile/profile.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -39,6 +40,11 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
 import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
 import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
+import { SingleTourComponent } from './tour/single-tour/single-tour.component';
+import { CreateReviewComponent } from './tour/create-review/create-review.component';
+import { ReviewComponent } from './tour/review/review.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,12 +59,16 @@ import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.
     ConfirmDialogComponent,
     CreateTourComponent,
     DetailsTourComponent,
+    ProfileComponent,
     CreateKeypointDialogComponent,
     KeyPointDetailsDialogComponent,
     PositionSimulatorComponent,
     PublishTourComponent,
     ShoppingCartComponent,
-    PurchasedToursComponent
+    PurchasedToursComponent,
+    SingleTourComponent,
+    CreateReviewComponent,
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +86,7 @@ import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.
     MatFormFieldModule,
     MatSnackBarModule,
     MarkdownModule.forRoot(),
+    MatProgressSpinnerModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,

@@ -1,0 +1,134 @@
+<div class="profile-edit-container" *ngIf="user">
+    <h1 class="page-title">Edit Profile</h1>
+
+    <div class="profile-header">
+        <!-- Profile picture -->
+        <div class="profile-image-section">
+        <img [src]="getAvatarUrl()" 
+            alt="Profile Picture" 
+            class="profile-image">
+
+        <!-- Dugme koje otvara file input -->
+        <button mat-icon-button class="edit-image-btn" (click)="triggerFileInput()">
+            <mat-icon>edit</mat-icon>
+        </button>
+
+        <!-- Skriveni input za izbor slike -->
+        <input 
+            type="file" 
+            #fileInput 
+            accept="image/*" 
+            style="display: none;" 
+            (change)="onFileSelected($event)">
+        </div>
+
+        <!-- User info -->
+        <div class="user-info-section">
+            <div class="user-info-content">
+                <h2 class="user-name">{{ user.firstName }} {{ user.lastName }}</h2>
+                <div class="user-details">
+                    <p class="username">{{ user.username }}</p>
+                    <p class="user-role">{{ getRoleDisplayName() }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <form [formGroup]="profileForm">
+        <div class="profile-details">
+            <!-- Email -->
+            <div class="detail-section">
+                <h3 class="detail-label">EMAIL ADDRESS</h3>
+                <p class="detail-value email">{{ user.email }}</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Name sections in a row -->
+            <div class="name-sections">
+                <!-- First name -->
+                <div class="detail-section">
+                    <h3 class="detail-label">FIRST NAME</h3>
+                    <ng-container *ngIf="!isEditing; else editFirstName">
+                        <p class="detail-value">{{ user?.firstName || 'Not set' }}</p>
+                    </ng-container>
+                    <ng-template #editFirstName>
+                        <mat-form-field appearance="outline" floatLabel="always" class="full-width-field">
+                            <input matInput placeholder="Enter first name" formControlName="firstName">
+                        </mat-form-field>
+                    </ng-template>
+                </div>
+
+                <!-- Last name -->
+                <div class="detail-section">
+                    <h3 class="detail-label">LAST NAME</h3>
+                    <ng-container *ngIf="!isEditing; else editLastName">
+                        <p class="detail-value">{{ user?.lastName || 'Not set' }}</p>
+                    </ng-container>
+                    <ng-template #editLastName>
+                        <mat-form-field appearance="outline" floatLabel="always" class="full-width-field">
+                            <input matInput placeholder="Enter last name" formControlName="lastName">
+                        </mat-form-field>
+                    </ng-template>
+                </div>
+            </div>
+
+            <!-- Motto -->
+            <div class="detail-section">
+                <h3 class="detail-label">MOTTO (QUOTE)</h3>
+                <ng-container *ngIf="!isEditing; else editMotto">
+                    <p class="detail-value motto">{{ user.motto || 'User has not entered a motto.' }}</p>
+                </ng-container>
+                <ng-template #editMotto>
+                    <mat-form-field appearance="outline" floatLabel="always" class="full-width-field">
+                        <input matInput formControlName="motto" placeholder="Enter your motto">
+                    </mat-form-field>
+                </ng-template>
+            </div>
+
+            <!-- Biography -->
+            <div class="detail-section">
+                <h3 class="detail-label">BIOGRAPHY</h3>
+                <ng-container *ngIf="!isEditing; else editBio">
+                    <p class="detail-value bio">{{ user.biography || 'User has not entered a biography.' }}</p>
+                </ng-container>
+                <ng-template #editBio>
+                    <mat-form-field appearance="outline" floatLabel="always" class="full-width-field bio-field">
+                        <textarea matInput rows="4" formControlName="biography" placeholder="Write your biography"></textarea>
+                    </mat-form-field>
+                </ng-template>
+            </div>
+        </div>
+    </form>
+
+    <!-- Action buttons -->
+    <div class="action-buttons">
+        <button mat-stroked-button class="edit-btn" *ngIf="!isEditing" (click)="onEdit()">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+        </button>
+
+        <button mat-stroked-button color="primary" class="next-btn" (click)="goToHome()" *ngIf="!isEditing">
+            <mat-icon>arrow_forward</mat-icon>
+            Next
+        </button>
+        
+        <div *ngIf="isEditing" class="edit-mode-buttons">
+            <button mat-stroked-button color="primary" class="save-btn" (click)="onSave()" [disabled]="profileForm.invalid">
+                <mat-icon>save</mat-icon>
+                Save Changes
+            </button>
+            <button mat-stroked-button color="warn" class="cancel-btn" (click)="onCancel()">
+                <mat-icon>cancel</mat-icon>
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Loader while data is loading -->
+<div *ngIf="!user" class="loading">
+    <p>Loading profile...</p>
+</div>
