@@ -38,6 +38,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
 import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
+import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +57,8 @@ import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.compon
     KeyPointDetailsDialogComponent,
     PositionSimulatorComponent,
     PublishTourComponent,
-    ShoppingCartComponent
+    ShoppingCartComponent,
+    PurchasedToursComponent
   ],
   imports: [
     BrowserModule,

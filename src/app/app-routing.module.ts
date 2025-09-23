@@ -11,6 +11,7 @@ import { DetailsTourComponent } from './tour/details-tour/details-tour.component
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 import { PublishTourComponent } from './tour/publish-tour/publish-tour.component';
 import { ShoppingCartComponent } from './tour/shopping-cart/shopping-cart.component';
+import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
     { path: 'position-simulator', component: PositionSimulatorComponent},
     { path: 'publish-tour', component: PublishTourComponent},
     { path: 'shopping-cart', component:ShoppingCartComponent},
+    { path: 'purchased-tours', component: PurchasedToursComponent},
 ];
 
 @NgModule({

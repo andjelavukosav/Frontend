@@ -4,6 +4,7 @@ import { TourService } from 'src/app/services/tour.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/auth/model/user.model';
 import { CartService } from 'src/app/services/cart.service';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-publish-tour',
@@ -36,8 +37,27 @@ export class PublishTourComponent implements OnInit {
       next: tours => {
         this.tours = tours.map(t => ({
           ...t,
-          keyPoints: t.keyPoints ?? []
+          keyPoints: t.keyPoints?.map(kp => ({
+            ...kp,
+            imageURL: `http://localhost:8080/uploads/${kp.imageURL}`
+          })) ?? []
         }));
+
+        // Inicijalizuj mapu za svaki prvi keyPoint
+        setTimeout(() => {  // čekamo da se DOM renderuje
+          this.tours.forEach(tour => {
+            if (tour.keyPoints?.length > 0) {
+              const kp = tour.keyPoints[0];
+              const map = L.map(`map-${tour.id}`).setView([kp.latitude, kp.longitude], 13);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+              }).addTo(map);
+              L.marker([kp.latitude, kp.longitude]).addTo(map)
+                .bindPopup(kp.name)
+                .openPopup();
+            }
+          });
+        }, 0);
       },
       error: err => console.error('Greška prilikom učitavanja tura:', err)
     });

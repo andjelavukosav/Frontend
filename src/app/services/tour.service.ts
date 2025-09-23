@@ -27,10 +27,18 @@ export class TourService {
   }
 
   getPublishTours(): Observable<PublishTour[]> {
-  return this.http.get<{ tours: PublishTour[] }>(`${this.apiUrl}/published`).pipe(
-    map(response => response.tours)
-  );
-}
+    return this.http.get<{ tours: PublishTour[] }>(`${this.apiUrl}/published`).pipe(
+      map(response => response.tours)
+    );
+  }
+
+ getPurchasedTours(userId: string): Observable<PublishTour[]> {
+    return this.http.get<PublishTour[]>(`${this.apiUrl}/purchased`, {
+      params: { userId: userId.toString() }
+    });
+  }
+
+
 
 
   addKeyPoint(formData: FormData): Observable<KeyPoint> {

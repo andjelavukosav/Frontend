@@ -1,5 +1,5 @@
 <div class="publish-tour-container"> 
-  <h2>My Tours</h2>
+  <h2>Purchased Tours</h2>
 
   <div *ngIf="tours.length === 0" class="no-tours">
     You have no tours published yet.
@@ -14,17 +14,10 @@
       <p><strong>Start time:</strong> {{ tour.startTime | date:'short' }}</p>
 
       <div class="keypoint" *ngIf="tour.keyPoints.length > 0">
-      <h4>First Key Point</h4>
-      <p><strong>Name:</strong> {{ tour.keyPoints[0].name }}</p>
-      <p><strong>Description:</strong> {{ tour.keyPoints[0].description }}</p>
-      <img [src]="tour.keyPoints[0].imageURL" alt="Key Point image" width="150" />
-
-      <!-- Mapa za prvi keyPoint -->
-      <div id="map-{{tour.id}}" class="map" style="height: 200px;"></div>
+        <h3>Key Points</h3>
+        <!-- Mapa za sve keyPoints u turi -->
+        <div id="map-{{tour.id}}" class="map" style="height: 300px;"></div>
     </div>
-
-
-      <button class="add-cart-btn" (click)="addToCart(tour)">Add to Cart 🛒</button>
     </div>
   </div>
 </div>
