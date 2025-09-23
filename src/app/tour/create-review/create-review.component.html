@@ -1,0 +1,102 @@
+<div class="review-dialog">
+  <h2 mat-dialog-title class="dialog-title">Leave a Review</h2>
+  
+  <mat-dialog-content>
+    <form [formGroup]="reviewForm" class="review-form">
+      <!-- Rating -->
+      <div class="form-section">
+        <label class="section-label">Rating *</label>
+        <div class="rating-stars">
+          <button 
+            type="button" 
+            *ngFor="let star of getRatingStars()" 
+            (click)="setRating(star)"
+            (mouseenter)="onStarHover(star)"
+            (mouseleave)="onStarLeave()"
+            [class.active]="shouldShowActive(star)"
+            class="star-btn"
+          >
+            ★
+          </button>
+        </div>
+        <mat-error *ngIf="reviewForm.get('rating')?.hasError('required')">
+          Rating is required
+        </mat-error>
+      </div>
+
+      <!-- Comment -->
+      <div class="form-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Comment *</mat-label>
+          <textarea 
+            matInput 
+            formControlName="comment" 
+            rows="4"
+            placeholder="Share your experience with the tour..."
+          ></textarea>
+          <mat-error *ngIf="reviewForm.get('comment')?.hasError('required')">
+            Comment is required
+          </mat-error>
+          <mat-error *ngIf="reviewForm.get('comment')?.hasError('minlength')">
+            Comment must be at least 10 characters long
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Add Images -->
+      <div class="form-section">
+        <label class="section-label">Add Images (maximum {{maxImages}})</label>
+        <div class="image-upload">
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onImageSelected($event)"
+            [disabled]="images.length >= maxImages"
+            #fileInput
+            hidden
+          >
+          <button 
+            type="button" 
+            mat-raised-button 
+            color="primary"
+            (click)="fileInput.click()"
+            [disabled]="images.length >= maxImages"
+            class="add-image-btn"
+          >
+            <mat-icon>add_photo_alternate</mat-icon>
+            Add Image
+          </button>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="image-preview" *ngIf="images.length > 0">
+          <div class="image-item" *ngFor="let image of images.controls; let i = index">
+            <img [src]="image.value" alt="Preview">
+            <button 
+              type="button" 
+              mat-icon-button 
+              color="warn" 
+              (click)="removeImage(i)"
+              class="remove-btn"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-btn">Cancel</button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="onSubmit()"
+      [disabled]="!reviewForm.valid"
+      class="submit-btn"
+    >
+      Submit Review
+    </button>
+  </mat-dialog-actions>
+</div>

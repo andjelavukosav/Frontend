@@ -10,6 +10,8 @@ import { CreateTourComponent } from './tour/create-tour/create-tour.component';
 import { DetailsTourComponent } from './tour/details-tour/details-tour.component';
 import { ProfileComponent } from './auth/profile/profile.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { SingleTourComponent } from './tour/single-tour/single-tour.component';
+import { CreateReviewComponent } from './tour/create-review/create-review.component';
 
 
 const routes: Routes = [
@@ -23,6 +25,8 @@ const routes: Routes = [
     { path: 'tours', component: DetailsTourComponent},
     { path: 'profile', component: ProfileComponent},
     { path: 'position-simulator', component: PositionSimulatorComponent},
+    { path: 'single-tour/:id', component: SingleTourComponent},
+    { path: 'create-review', component: CreateReviewComponent}
 ];
 
 @NgModule({

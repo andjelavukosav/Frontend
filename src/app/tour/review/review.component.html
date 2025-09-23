@@ -1,0 +1,43 @@
+<div class="reviews-container">
+  <h2>Reviews</h2>
+  
+  <div *ngIf="reviews.length === 0" class="no-reviews">
+    <p>No reviews yet. Be the first to leave a review!</p>
+  </div>
+
+  <!-- Dodajte ovaj div sa grid klasom -->
+  <div class="reviews-grid" *ngIf="reviews.length > 0">
+    <div *ngFor="let review of reviews" class="review-card">
+      <div class="review-header">
+        <div class="tourist-info">
+          <img 
+            [src]="review.tourist_image || 'assets/images/profile.jpg'" 
+            alt="{{ review.tourist_name }}'s avatar" 
+            class="avatar"
+          >
+          <div class="tourist-details">
+            <h3 class="tourist-name">{{ review.tourist_name || 'Anonymous Tourist' }}</h3>
+            <div class="rating">{{ getStars(review.rating) }}</div>
+          </div>
+        </div>
+        <div class="review-dates">
+          <p>Visited: {{ formatDate(review.visit_date) }}</p>
+          <p>Reviewed: {{ formatDate(review.comment_date) }}</p>
+        </div>
+      </div>
+
+      <div class="review-content">
+        <p class="comment">{{ review.comment }}</p>
+        
+        <div *ngIf="review.images && review.images.length > 0" class="review-images">
+          <img 
+            *ngFor="let image of review.images" 
+            [src]="image" 
+            alt="Review image" 
+            class="review-image"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

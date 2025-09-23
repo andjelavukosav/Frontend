@@ -1,0 +1,70 @@
+<div class="single-tour-container" *ngIf="tour">
+  <!-- Header sa statusom i cenom -->
+  <div class="card-header">
+    <div class="status-badge" [ngClass]="tour.status || 'draft'">
+      {{ tour.status || 'draft' }}
+    </div>
+    <div class="price-info" *ngIf="tour.price !== undefined && tour.price > 0">
+      <span class="price">{{ tour.price }} RSD</span>
+    </div>
+  </div>
+
+  <!-- Naslov ture -->
+  <div class="title-section">
+    <h1 class="tour-name">{{ tour.name }}</h1>
+  </div>
+
+  <!-- Težina ture -->
+  <div class="difficulty-section">
+    <span class="field-label">Difficulty:</span>
+    <span class="tour-difficulty" [ngClass]="'difficulty-' + tour.difficulty.toLowerCase()">
+      {{ tour.difficulty }}
+    </span>
+  </div>
+
+  <!-- Opis ture -->
+  <div class="description-section">
+    <span class="field-label">Description</span>
+    <p class="tour-description">{{ tour.description }}</p>
+  </div>
+
+  <!-- KeyPoints - obavezno po modelu -->
+  <div class="keypoints-section" *ngIf="tour.keyPoints && tour.keyPoints.length > 0">
+    <span class="field-label">Key Points</span>
+    <div class="keypoints-list">
+      <div *ngFor="let keyPoint of tour.keyPoints" class="keypoint-item">
+        <div class="keypoint-name">{{ keyPoint.name }}</div>
+        <div class="keypoint-description" *ngIf="keyPoint.description">{{ keyPoint.description }}</div>
+        <div class="keypoint-location" *ngIf="keyPoint.latitude && keyPoint.longitude">
+          Location: {{ keyPoint.latitude }}, {{ keyPoint.longitude }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tagovi -->
+  <div class="tags-section" *ngIf="tour.tags && tour.tags.length > 0">
+    <span class="field-label">Tags</span>
+    <div class="tour-tags">
+      <span *ngFor="let tag of tour.tags" class="tag">{{ tag }}</span>
+    </div>
+  </div>
+
+  <!-- Dugmad za akciju -->
+  <div class="action-buttons">
+    <button class="back-button" routerLink="/">
+      Back to Tours
+    </button>
+    <!-- Zamena za review dugme -->
+    <button class="review-button" (click)="openReviewDialog()">
+      Review
+    </button>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div *ngIf="!tour" class="loading">
+  <p>Loading tour details...</p>
+</div>
+
+<app-review *ngIf="reviewsList" [reviews]="reviewsList"></app-review>
