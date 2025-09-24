@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { AuthService } from 'src/app/services/auth.service';
@@ -6,14 +6,13 @@ import { User } from 'src/app/auth/model/user.model';
 import { TourService } from 'src/app/services/tour.service';
 import { PositionSimulatorService } from 'src/app/services/position-simulator.service';
 import { interval, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-active-tour',
   templateUrl: './active-tour.component.html',
   styleUrls: ['./active-tour.component.css']
 })
-export class ActiveTourComponent implements OnInit {
+export class ActiveTourComponent implements OnInit, OnDestroy {
 
   executionId!: string;
   tour: any;
@@ -25,7 +24,7 @@ export class ActiveTourComponent implements OnInit {
 
   positionCheckInterval!: Subscription;
   checkDistanceSeconds = 10; // svake 10 sekundi
-  proximityThreshold = 0.05; // prag udaljenosti u km (~50m)
+  proximityThreshold = 2; // prag udaljenosti u km (~2km)
 
   constructor(
     private route: ActivatedRoute,
@@ -36,17 +35,59 @@ export class ActiveTourComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('ActiveTourComponent initialized');
+
     this.executionId = this.route.snapshot.paramMap.get('executionId')!;
-    this.tour = history.state.tour;
+    console.log('Execution ID:', this.executionId);
 
-    this.authService.user$.subscribe(user => {
-      this.user = user;
+    this.authService.user$.subscribe({
+  next: (user) => {
+    this.user = user;
+    if (!this.user) return;
 
-      // ako je user već učitan i tour postoji, učitaj trenutnu poziciju
-      if (this.tour && this.tour.keyPoints && this.tour.keyPoints.length > 0) {
-        setTimeout(() => this.initMap(), 0);
+    // 1️⃣ Učitaj aktivnu turu
+    this.tourService.getActiveTour(this.user.id).subscribe({
+      next: (active) => {
+      if (!active) {
+        this.router.navigate(['/purchased-tours']);
+        return;
       }
+
+      this.executionId = active.executionId;
+
+      // Umesto getPurchasedTours, pozovi getTourById
+      this.tourService.getTourById(active.tourId).subscribe({
+        next: (tour) => {
+          if (!tour) {
+            console.error('Tour not found with id', active.tourId);
+            return;
+          }
+
+          this.tour = tour; // sada imamo sve podatke
+
+          // Inicijalizuj mapu i interval
+          if (this.tour.keyPoints && this.tour.keyPoints.length > 0) {
+            setTimeout(() => this.initMap(), 0);
+            this.positionCheckInterval = interval(this.checkDistanceSeconds * 1000)
+              .subscribe(() => this.checkProximity());
+          } else {
+            console.warn('Tour has no key points, skipping map and proximity checks');
+          }
+        },
+        error: (err) => console.error('Error fetching tour by id', err)
+      });
+    },
+    error: (err) => console.error('Error fetching active tour', err)
     });
+  }
+});
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.positionCheckInterval) {
+      this.positionCheckInterval.unsubscribe();
+    }
   }
 
   private initMap(): void {
@@ -80,19 +121,6 @@ export class ActiveTourComponent implements OnInit {
     // Učitaj trenutnu poziciju korisnika
     this.loadCurrentPosition();
   }
-
-  private getDistanceInKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Zemljin poluprečnik u km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-  }
-
 
   private loadCurrentPosition(): void {
     if (!this.user?.id) return;
@@ -129,6 +157,49 @@ export class ActiveTourComponent implements OnInit {
     this.tourMap.setView([lat, lng], 13);
   }
 
+  private getDistanceInKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) ** 2 +
+      Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+      Math.sin(dLon/2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }
+
+  private checkProximity(): void {
+    if (!this.user?.id || !this.tour?.keyPoints) return;
+
+    this.positionService.getCurrentPosition(this.user.id).subscribe(pos => {
+      if (!pos) return;
+
+      this.currentPosition = { latitude: pos.latitude, longitude: pos.longitude };
+      this.setCurrentPositionMarker(pos.latitude, pos.longitude);
+
+      this.tour.keyPoints.forEach((kp: any) => {
+        const distance = this.getDistanceInKm(pos.latitude, pos.longitude, kp.latitude, kp.longitude);
+        if (distance <= this.proximityThreshold) {
+          console.log(`Tourist is near key point: ${kp.name} (distance: ${distance.toFixed(3)} km)`);
+
+          // Pošalji zahtev na backend
+          this.tourService.notifyNearKeyPoint(this.executionId, kp.id, this.user!.id)
+              .subscribe({
+                next: res => {
+                  console.log('Backend notified about proximity', res);
+
+                  // ❗ Ovde pozovi proveru da li je tura završena
+                  this.checkIfTourCompleted();
+                },
+                error: err => console.error('Error notifying proximity', err)
+              });
+
+        }
+      });
+    });
+  }
+
   leaveTour(): void {
     if (!this.user?.id) return;
 
@@ -137,37 +208,32 @@ export class ActiveTourComponent implements OnInit {
         console.log('Tour left, status:', res.status);
         this.router.navigate(['/purchased-tours']);
       },
-      error: err => {
-        console.error('Error leaving tour', err);
-      }
+      error: err => console.error('Error leaving tour', err)
     });
   }
 
-  private checkProximity(): void {
-    if (!this.user?.id || !this.tour?.keyPoints) return;
+  private checkIfTourCompleted(): void {
+    this.tourService.checkTourCompletion(this.executionId).subscribe({
+      next: (res) => {
+        if (res.completed) { // backend vraća npr. { completed: true/false }
+          console.log('Tour successfully completed!');
+          
+          // Opcionalno, prikaži notifikaciju korisniku
+          alert('🎉 Čestitamo! Uspešno ste završili turu.');
 
-    // 1️⃣ prvo uzmi trenutnu poziciju iz PositionSimulatorService
-    this.positionService.getCurrentPosition(this.user.id).subscribe(pos => {
-      if (!pos) return;
+          // Lokalno promeni status ture
+          this.tour.status = 'COMPLETE';
 
-      this.currentPosition = { latitude: pos.latitude, longitude: pos.longitude };
-      this.setCurrentPositionMarker(pos.latitude, pos.longitude);
-
-      // 2️⃣ proveri udaljenost do svih ključnih tačaka
-      this.tour.keyPoints.forEach((kp: any) => {
-        const distance = this.getDistanceInKm(pos.latitude, pos.longitude, kp.latitude, kp.longitude);
-        if (distance <= this.proximityThreshold) {
-          console.log(`Tourist is near key point: ${kp.name} (distance: ${distance.toFixed(3)} km)`);
-
-          // 3️⃣ ovde možeš poslati zahtev na backend da obavestiš da je turista blizu
-          this.tourService.notifyNearKeyPoint(this.executionId, kp.id, this.user!.id)
-            .subscribe(res => {
-              console.log('Backend notified about proximity', res);
-            });
+          // Opcionalno, zaustavi interval proveravanja blizine
+          if (this.positionCheckInterval) {
+            this.positionCheckInterval.unsubscribe();
+          }
         }
-      });
+      },
+      error: (err) => console.error('Error checking tour completion', err)
     });
   }
-
 
 }
+
+

@@ -25,3 +25,48 @@
 .remove-btn:hover, .clear-btn:hover {
   background-color: #b71c1c;
 }
+
+.cart-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Sekundarna dugmad */
+.clear-btn, .remove-btn {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.clear-btn:hover, .remove-btn:hover {
+  background-color: #d6d6d6;
+}
+
+/* ✅ Glavno dugme za kupovinu */
+.buy-btn {
+  background-color: #28a745; /* zelena - kupovina */
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.buy-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05); /* malo uvećanje */
+}
+
+.buy-btn:active {
+  transform: scale(0.95); /* efekat klika */
+}
+

@@ -124,4 +124,14 @@ export class TourService {
   notifyNearKeyPoint(executionId: string, keyPointId: string, userId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${executionId}/keypoint/${keyPointId}/notify`, { userId });
   }
+
+  getActiveTour(touristId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/active-tour/${touristId}`);
+  }
+
+  // Nova metoda za proveru završetka ture
+  checkTourCompletion(executionId: string): Observable<{ completed: boolean }> {
+    return this.http.get<{ completed: boolean }>(`${this.apiUrl}/${executionId}/check-completion`);
+  }
+
 }

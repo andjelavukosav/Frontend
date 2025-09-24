@@ -23,6 +23,8 @@
       <div id="map-{{tour.id}}" class="map" style="height: 200px;"></div>
     </div>
 
+    <app-review *ngIf="reviewsList" [reviews]="reviewsList"></app-review>
+
 
       <button class="add-cart-btn" (click)="addToCart(tour)">Add to Cart 🛒</button>
     </div>
