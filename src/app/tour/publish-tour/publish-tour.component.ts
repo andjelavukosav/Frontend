@@ -28,18 +28,25 @@ export class PublishTourComponent implements OnInit {
 ) {}
 
 addToCart(tour: PublishTour): void {
-  this.cartService.addToCart(tour);
+  this.cartService.addToCart(this.user?.id || "", tour).subscribe({
+    next: () => {
+      let snackBarRef = this.snackBar.open(
+        `Tour "${tour.name}" je dodata u korpu!`, 
+        'Idi u korpu', 
+        { duration: 3000 }
+      );
 
-  let snackBarRef = this.snackBar.open(
-    `Tour "${tour.name}" je dodata u korpu!`, 
-    'Idi u korpu', 
-    { duration: 3000 }  // zatvara se posle 3 sekunde
-  );
-
-  snackBarRef.onAction().subscribe(() => {
-    this.router.navigate(['/shopping-cart']);  // navigacija na korpu
+      snackBarRef.onAction().subscribe(() => {
+        this.router.navigate(['/shopping-cart']);
+      });
+    },
+    error: err => {
+      console.error("❌ Greška prilikom dodavanja u korpu:", err);
+      this.snackBar.open("Došlo je do greške pri dodavanju ture u korpu", "Zatvori", { duration: 3000 });
+    }
   });
 }
+
 
   ngOnInit(): void {
     this.authService.user$.subscribe(user => {

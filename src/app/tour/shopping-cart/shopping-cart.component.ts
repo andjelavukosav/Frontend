@@ -21,24 +21,30 @@ export class ShoppingCartComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.authService.user$.subscribe(user => {
       this.user = user;
+      if (this.user) {
+        this.cartService.loadCart(this.user.id).subscribe();
+      }
     });
+
     this.cartService.cart$.subscribe(items => {
       this.cartItems = items;
-      this.totalPrice = this.cartService.getTotalPrice();
+      this.totalPrice = this.cartItems.reduce((sum, item) => sum + (item.price || 0), 0);
     });
+
   }
 
   removeFromCart(tourId: string) {
-    this.cartService.removeFromCart(tourId);
+    if (!this.user) return;
+    this.cartService.removeFromCart(this.user.id, tourId).subscribe();
   }
 
   clearCart() {
-    this.cartService.clearCart();
+    if (!this.user) return;
+    this.cartService.clearCart(this.user.id).subscribe();
   }
-
   buyTours() {
     if (this.cartItems.length === 0) {
       alert("Cart is empty!");

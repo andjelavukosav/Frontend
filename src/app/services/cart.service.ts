@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { PublishTour } from '../tour/model/create-tour.model';
 
 @Injectable({
@@ -8,30 +9,46 @@ import { PublishTour } from '../tour/model/create-tour.model';
 export class CartService {
   private cartItems: PublishTour[] = [];
   private cartSubject = new BehaviorSubject<PublishTour[]>([]);
-  cart$ = this.cartSubject.asObservable(); // za subscribe u komponentama
+  cart$ = this.cartSubject.asObservable();
 
-  addToCart(tour: PublishTour) {
-    if (!this.cartItems.find(t => t.id === tour.id)) {
-      this.cartItems.push(tour);
-      this.cartSubject.next([...this.cartItems]);
-    }
-  }
+  private apiUrl = 'http://localhost:8080/cart';
 
-  removeFromCart(tourId: string) {
-    this.cartItems = this.cartItems.filter(t => t.id !== tourId);
-    this.cartSubject.next([...this.cartItems]);
-  }
+  constructor(private http: HttpClient) {}
 
-  clearCart() {
-    this.cartItems = [];
-    this.cartSubject.next([]);
-  }
+  loadCart(userId: string) {
+  return this.http.get<{ items: PublishTour[], totalPrice: number }>(`${this.apiUrl}/${userId}`).pipe(
+    tap(response => {
+      this.cartItems = response.items;
+      this.cartSubject.next(this.cartItems);
+    })
+  );
+}
 
-  getCartItems(): PublishTour[] {
-    return [...this.cartItems];
-  }
+addToCart(userId: string, tour: PublishTour) {
+  return this.http.post<{ items: PublishTour[], totalPrice: number }>(`${this.apiUrl}/${userId}/items`, tour).pipe(
+    tap(response => {
+      this.cartItems = response.items;
+      this.cartSubject.next(this.cartItems);
+    })
+  );
+}
 
-  getTotalPrice(): number {
-    return this.cartItems.reduce((total, tour) => total + (tour.price || 0), 0);
-  }
+removeFromCart(userId: string, tourId: string) {
+  return this.http.delete<{ items: PublishTour[], totalPrice: number }>(`${this.apiUrl}/${userId}/items/${tourId}`).pipe(
+    tap(response => {
+      this.cartItems = response.items;
+      this.cartSubject.next(this.cartItems);
+    })
+  );
+}
+
+clearCart(userId: string) {
+  return this.http.delete<{ items: PublishTour[], totalPrice: number }>(`${this.apiUrl}/${userId}/clear`).pipe(
+    tap(response => {
+      this.cartItems = response.items;
+      this.cartSubject.next(this.cartItems);
+    })
+  );
+}
+
 }
