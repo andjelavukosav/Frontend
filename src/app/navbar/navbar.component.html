@@ -20,7 +20,6 @@
         Blogs
       </a>
 
-      <!-- Linkovi samo za turiste -->
       <ng-container *ngIf="user.role === 'tourist'">
         <a routerLink="/position-simulator" routerLinkActive="active-link">
           Position Simulator
@@ -34,7 +33,15 @@
         <a routerLink="/purchased-tours" routerLinkActive="active-link">
           Purchased Tours
         </a>
+
+        <!-- Novo dugme -->
+        <a *ngIf="activeTourExecutionId"
+          [routerLink]="['/active-tour', activeTourExecutionId]"
+          routerLinkActive="active-link">
+          Active Tour
+        </a>
       </ng-container>
+
 
       <!-- Linkovi samo za vodiče -->
       <ng-container *ngIf="user.role === 'guide'">

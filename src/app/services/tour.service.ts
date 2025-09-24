@@ -40,6 +40,21 @@ export class TourService {
   }
 
 
+  // tour.service.ts
+  startTour(userId: string, tourId: string): Observable<any> {
+    const url = `${this.apiUrl}/start-tour`; // ako apiUrl = http://localhost:8080/tours
+    const body = { userId, tourId };
+    return this.http.post<any>(url, body);
+  }
+
+
+  leaveTour(executionId: string, userId: string) {
+    return this.http.post<{ status: string }>(
+      `${this.apiUrl}/leave-tour`,
+      { tourExecutionId: executionId, userId }
+    );
+  }
+
 
 
   addKeyPoint(formData: FormData): Observable<KeyPoint> {
@@ -104,6 +119,19 @@ export class TourService {
 
   createReview(formData: FormData): Observable<Review> {
     return this.http.post<Review>(`${this.apiUrl}/reviews`, formData);
+  }
+
+  notifyNearKeyPoint(executionId: string, keyPointId: string, userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${executionId}/keypoint/${keyPointId}/notify`, { userId });
+  }
+
+  getActiveTour(touristId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/active-tour/${touristId}`);
+  }
+
+  // Nova metoda za proveru završetka ture
+  checkTourCompletion(executionId: string): Observable<{ completed: boolean }> {
+    return this.http.get<{ completed: boolean }>(`${this.apiUrl}/${executionId}/check-completion`);
   }
 
 }

@@ -43,6 +43,7 @@ import { PurchasedToursComponent } from './tour/purchased-tours/purchased-tours.
 import { SingleTourComponent } from './tour/single-tour/single-tour.component';
 import { CreateReviewComponent } from './tour/create-review/create-review.component';
 import { ReviewComponent } from './tour/review/review.component';
+import { ActiveTourComponent } from './tour/active-tour/active-tour.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { ReviewComponent } from './tour/review/review.component';
     SingleTourComponent,
     CreateReviewComponent,
     ReviewComponent,
+    ActiveTourComponent,
   ],
   imports: [
     BrowserModule,

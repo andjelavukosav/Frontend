@@ -9,7 +9,7 @@
     <div *ngFor="let tour of cartItems" class="cart-item">
       <h3>{{ tour.id }}</h3>
       <p><strong>Name:</strong> {{ tour.name }} </p>
-      <p><strong>Price:</strong> {{ tour.price }} USD</p>
+      <p><strong>Price:</strong> {{ tour.price }} €</p>
       <button class="remove-btn" (click)="removeFromCart(tour.id!)">Remove</button>
     </div>
 
@@ -17,6 +17,7 @@
       <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
       <button class="buy-btn" (click)="buyTours()">Buy</button>
     </div>
+
 
     <div class="total">
       <h3>Total: {{ totalPrice }} €</h3>

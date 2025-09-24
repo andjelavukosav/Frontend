@@ -4,6 +4,7 @@ import { User } from 'src/app/auth/model/user.model';
 import { TourService } from 'src/app/services/tour.service';
 import { AuthService } from 'src/app/services/auth.service';
 import * as L from 'leaflet';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-purchased-tours',
@@ -16,7 +17,8 @@ export class PurchasedToursComponent implements OnInit{
 
   constructor(
     private tourService: TourService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -76,4 +78,20 @@ export class PurchasedToursComponent implements OnInit{
   });
 }
   }
+
+  startTour(tour: any) {
+  this.tourService.startTour(this.user!.id, tour.id).subscribe({
+    next: (res) => {
+      console.log('Tour started', res);
+      // res.tourExecutionId dolazi sa backa
+      this.router.navigate(['/active-tour', res.tourExecutionId], {
+        state: { tour } // možeš proslediti celu turu kroz state
+      });
+    },
+    error: (err) => {
+      console.error('Error starting tour', err);
+    }
+  });
+}
+
 }
