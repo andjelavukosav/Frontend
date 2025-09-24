@@ -8,21 +8,22 @@
 
       <div class="tour-actions">
         <button 
-          *ngIf="!tour.publishedAt"
-          class="publish-btn" 
-          (click)="publishTour(tour)">
-          Publish
-        </button>
+        *ngIf="!tour.publishedAt"
+        class="publish-btn" 
+        (click)="publishTour(tour)"
+        [disabled]="tour.status === 'PENDING_PUBLISH'">
+        {{ tour.status === 'PENDING_PUBLISH' ? 'Publishing...' : 'Publish' }}
+      </button>
 
        <!-- Published: info + dugme za arhiviranje -->
-        <div *ngIf="tour.status === 'PUBLISHED'" class="published-info">
-          <span>Published: {{ tour.publishedAt | date:'dd.MM.yyyy HH:mm' }}</span>
-          <button 
-            class="archive-btn"
-            (click)="archiveTour(tour)">
-            Archive
-          </button>
-        </div>
+       <div *ngIf="tour.status === 'PUBLISHED'" class="published-info-wrapper">
+        <span class="published-info">Published: {{ tour.publishedAt | date:'dd.MM.yyyy HH:mm' }}</span>
+        <button 
+          class="archive-btn"
+          (click)="archiveTour(tour)">
+          Archive
+        </button>
+      </div>
 
          <!-- Archived: samo info o publish + archive -->
         <div *ngIf="tour.status === 'ARCHIVED'" class="archived-info">

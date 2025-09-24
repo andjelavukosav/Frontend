@@ -270,7 +270,7 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
 
       this.tourService.updateTourStatus(tour.id!, TourStatus.PUBLISHED).subscribe({
         next: (response: UpdateTourStatusResponse) => {
-
+          
           tour.status = TourStatus.PUBLISHED
           if (response.updatedAt) {
             const ts = response.updatedAt as any; // gRPC Timestamp
@@ -303,6 +303,61 @@ export class DetailsTourComponent implements OnInit, OnDestroy { // Dodat OnDest
       });
     }
   }
+
+   /* publishTour(tour: Tour) {
+  if (this.canPublish(tour)) {
+
+    this.tourService.updateTourStatus(tour.id!, TourStatus.PUBLISHED).subscribe({
+      next: (response: UpdateTourStatusResponse) => {
+        if(response.status === TourStatus.PENDING_PUBLISH){
+          tour.status = TourStatus.PENDING_PUBLISH;
+          this.snackBar.open('Publishing tour...', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-info']
+          });
+
+          // startuj polling da čekaš finalni status
+          this.pollTourStatus(tour);
+        }
+      }, 
+      error: (err) => {
+        console.error(err);
+        this.snackBar.open('Failed to publish tour.', 'Close', {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
+
+  } else {
+    this.snackBar.open('Tour cannot be published. Check required fields, key points, and durations.', 'Close', {
+      duration: 4000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-error']
+    });
+  }
+}
+
+
+  pollTourStatus(tour: Tour) {
+  const interval = setInterval(() => {
+    this.tourService.getTourById(tour.id!).subscribe(updatedTour => {
+      tour.status = updatedTour.status;
+      if (tour.status === TourStatus.PUBLISHED) {
+        tour.publishedAt = updatedTour.publishedAt;
+        clearInterval(interval);
+        this.snackBar.open('Tour successfully published!', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      }
+    });
+  }, 2000); 
+}*/
+
 
   archiveTour(tour: Tour) {
     this.tourService.updateTourStatus(tour.id!, TourStatus.ARCHIVED).subscribe({
